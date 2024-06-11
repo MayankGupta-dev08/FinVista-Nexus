@@ -23,6 +23,7 @@ public class AccountsController {
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createAccount(@RequestBody CustomerDto customerDto) {
         log.info("AccountsController#createAccount");
+
         accountsService.createAccount(customerDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -33,6 +34,7 @@ public class AccountsController {
     @GetMapping("/fetch")
     public ResponseEntity<CustomerDto> getAccount(@RequestParam String mobileNumber) {
         log.info("AccountsController#getAccount");
+
         CustomerDto customerDto = accountsService.fetchAccount(mobileNumber);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -42,6 +44,7 @@ public class AccountsController {
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateAccount(@RequestBody CustomerDto customerDto) {
         log.info("AccountsController#updateAccount");
+
         boolean isAccountUpdated = accountsService.updateAccount(customerDto);
         if (isAccountUpdated)
             return ResponseEntity
@@ -53,5 +56,22 @@ public class AccountsController {
                 .status(HttpStatus.EXPECTATION_FAILED)
                 .body(new ResponseDto(AccountsEnum.StatusCode.STATUS_417.getValue(),
                         AccountsEnum.StatusMessage.MESSAGE_417_UPDATE.getMessage()));
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDto> deleteAccount(@RequestParam String mobileNumber) {
+        log.info("AccountsController#deleteAccount");
+
+        boolean isAccountDeleted = accountsService.deleteAccount(mobileNumber);
+        if (isAccountDeleted)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDto(AccountsEnum.StatusCode.STATUS_200.getValue(),
+                            AccountsEnum.StatusMessage.MESSAGE_200.getMessage()));
+
+        return ResponseEntity
+                .status(HttpStatus.EXPECTATION_FAILED)
+                .body(new ResponseDto(AccountsEnum.StatusCode.STATUS_417.getValue(),
+                        AccountsEnum.StatusMessage.MESSAGE_417_DELETE.getMessage()));
     }
 }
