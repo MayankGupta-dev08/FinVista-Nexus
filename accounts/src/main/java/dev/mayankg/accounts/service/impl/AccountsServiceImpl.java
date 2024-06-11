@@ -12,6 +12,7 @@ import dev.mayankg.accounts.service.IAccountsService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
@@ -33,6 +34,8 @@ public class AccountsServiceImpl implements IAccountsService {
             throw new CustomerAlreadyExistingException(
                     String.format("Customer already registered with this %s mobile number", customerDto.getMobileNumber()));
         }
+        customer.setCreatedBy("user");
+        customer.setCreatedAt(LocalDateTime.now());
         Customer savedCustomer = customerRepository.save(customer);
         accountsRepository.save(createNewAccount(savedCustomer));
     }
@@ -48,6 +51,8 @@ public class AccountsServiceImpl implements IAccountsService {
         newAccount.setAccountNumber(accountNumber);
         newAccount.setAccountType(AccountsEnum.AccountType.SAVINGS.getValue());
         newAccount.setBranchAddress(AccountsEnum.Address.MAIN.getValue());
+        newAccount.setCreatedBy("user");
+        newAccount.setCreatedAt(LocalDateTime.now());
         return newAccount;
     }
 }
