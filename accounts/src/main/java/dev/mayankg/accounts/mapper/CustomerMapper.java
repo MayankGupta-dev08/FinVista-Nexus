@@ -3,10 +3,10 @@ package dev.mayankg.accounts.mapper;
 import dev.mayankg.accounts.dto.CustomerDto;
 import dev.mayankg.accounts.entity.Customer;
 
-@SuppressWarnings("unused")
 public final class CustomerMapper {
 
     private CustomerMapper() {
+        // restricting instantiation
     }
 
     public static Customer mapToCustomer(CustomerDto customerDto) {
@@ -32,5 +32,4 @@ public final class CustomerMapper {
         customerDto.setMobileNumber(customer.getMobileNumber());
         return customerDto;
     }
-
 }
