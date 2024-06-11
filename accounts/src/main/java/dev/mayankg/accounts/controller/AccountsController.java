@@ -5,14 +5,13 @@ import dev.mayankg.accounts.dto.CustomerDto;
 import dev.mayankg.accounts.dto.ResponseDto;
 import dev.mayankg.accounts.service.IAccountsService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 @SuppressWarnings("unused")
@@ -23,10 +22,20 @@ public class AccountsController {
 
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createAccount(@RequestBody CustomerDto customerDto) {
+        log.info("AccountsController#createAccount");
         accountsService.createAccount(customerDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(AccountsEnum.StatusCode.STATUS_201.getValue(),
                         AccountsEnum.StatusMessage.MESSAGE_201.getMessage()));
+    }
+
+    @GetMapping("/fetch")
+    public ResponseEntity<CustomerDto> getAccount(@RequestParam String mobileNumber) {
+        log.info("AccountsController#getAccount");
+        CustomerDto customerDto = accountsService.fetchAccount(mobileNumber);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(customerDto);
     }
 }
