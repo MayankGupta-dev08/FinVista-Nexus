@@ -38,4 +38,20 @@ public class AccountsController {
                 .status(HttpStatus.OK)
                 .body(customerDto);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<ResponseDto> updateAccount(@RequestBody CustomerDto customerDto) {
+        log.info("AccountsController#updateAccount");
+        boolean isAccountUpdated = accountsService.updateAccount(customerDto);
+        if (isAccountUpdated)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDto(AccountsEnum.StatusCode.STATUS_200.getValue(),
+                            AccountsEnum.StatusMessage.MESSAGE_200.getMessage()));
+
+        return ResponseEntity
+                .status(HttpStatus.EXPECTATION_FAILED)
+                .body(new ResponseDto(AccountsEnum.StatusCode.STATUS_417.getValue(),
+                        AccountsEnum.StatusMessage.MESSAGE_417_UPDATE.getMessage()));
+    }
 }

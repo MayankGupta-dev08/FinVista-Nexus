@@ -1,6 +1,7 @@
 package dev.mayankg.accounts.service.impl;
 
 import dev.mayankg.accounts.constants.AccountsEnum;
+import dev.mayankg.accounts.dto.AccountsDto;
 import dev.mayankg.accounts.dto.CustomerDto;
 import dev.mayankg.accounts.entity.Accounts;
 import dev.mayankg.accounts.entity.Customer;
@@ -61,6 +62,45 @@ public class AccountsServiceImpl implements IAccountsService {
         CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer);
         customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(account));
         return customerDto;
+    }
+
+    /**
+     * @param customerDto - CustomerDto Object
+     * @return boolean indicating if the update of Account details is successful or not
+     */
+    @Override
+    public boolean updateAccount(CustomerDto customerDto) {
+        log.info("AccountsServiceImpl#updateAccount");
+        boolean isUpdated = false;
+
+        AccountsDto accountsDto = customerDto.getAccountsDto();
+        if (accountsDto != null) {
+            Long accountNumber = accountsDto.getAccountNumber();
+            Accounts theAccount = accountsRepository.findById(accountNumber).orElseThrow(
+                    () -> new ResourceNotFoundException("Accounts", "AccountNumber", accountNumber.toString())
+            );
+            Accounts account = AccountsMapper.mapToAccounts(accountsDto, theAccount);
+            accountsRepository.save(account);
+
+            Long customerId = account.getCustomerId();
+            Customer theCustomer = customerRepository.findById(customerId).orElseThrow(
+                    () -> new ResourceNotFoundException("Customer", "CustomerID", customerId.toString())
+            );
+            Customer customer = CustomerMapper.mapToCustomer(customerDto, theCustomer);
+            customerRepository.save(customer);
+            isUpdated = true;
+        }
+
+        return isUpdated;
+    }
+
+    /**
+     * @param mobileNumber - Input Mobile Number
+     * @return boolean indicating if the deleting of Account details is successful or not
+     */
+    @Override
+    public boolean deleteAccount(String mobileNumber) {
+        return false;
     }
 
     /**

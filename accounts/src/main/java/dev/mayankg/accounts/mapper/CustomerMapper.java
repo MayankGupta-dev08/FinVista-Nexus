@@ -4,7 +4,7 @@ import dev.mayankg.accounts.dto.CustomerDto;
 import dev.mayankg.accounts.entity.Customer;
 
 @SuppressWarnings("unused")
-public class CustomerMapper {
+public final class CustomerMapper {
 
     private CustomerMapper() {
     }
