@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 /**
  * @author Mayank Gupta
- * @Link: <a href=http://localhost:8080/swagger-ui/index.html>Swagger</a>
+ * @Link: <a href=http://localhost:8080/swagger-ui/index.html>Swagger for Accounts Microservice</a>
  */
 /*@ComponentScans({ @ComponentScan("dev.mayankg.accounts.controller") })
 @EnableJpaRepositories("dev.mayankg.accounts.repository")

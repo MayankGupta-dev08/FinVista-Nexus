@@ -14,7 +14,7 @@
     <artifactId>accounts</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <name>accounts</name>
-    <description>Microservice for accounts</description>
+    <description>Accounts Microservice of FinVista Nexus</description>
 
 
     <properties>
