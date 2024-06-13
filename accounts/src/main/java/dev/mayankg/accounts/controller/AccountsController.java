@@ -4,6 +4,8 @@ import dev.mayankg.accounts.constants.AccountsEnum;
 import dev.mayankg.accounts.dto.CustomerDto;
 import dev.mayankg.accounts.dto.ResponseDto;
 import dev.mayankg.accounts.service.IAccountsService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,7 +28,7 @@ public class AccountsController {
     private IAccountsService accountsService;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createAccount(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CustomerDto customerDto) {
         log.info("AccountsController#createAccount");
 
         accountsService.createAccount(customerDto);
@@ -37,7 +39,10 @@ public class AccountsController {
     }
 
     @GetMapping("/fetch")
-    public ResponseEntity<CustomerDto> getAccount(@RequestParam String mobileNumber) {
+    public ResponseEntity<CustomerDto> getAccount(
+            @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
+            @RequestParam String mobileNumber
+    ) {
         log.info("AccountsController#getAccount");
 
         CustomerDto customerDto = accountsService.fetchAccount(mobileNumber);
@@ -47,7 +52,7 @@ public class AccountsController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseDto> updateAccount(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<ResponseDto> updateAccount(@Valid @RequestBody CustomerDto customerDto) {
         log.info("AccountsController#updateAccount");
 
         boolean isAccountUpdated = accountsService.updateAccount(customerDto);
@@ -64,7 +69,10 @@ public class AccountsController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseDto> deleteAccount(@RequestParam String mobileNumber) {
+    public ResponseEntity<ResponseDto> deleteAccount(
+            @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
+            @RequestParam String mobileNumber
+    ) {
         log.info("AccountsController#deleteAccount");
 
         boolean isAccountDeleted = accountsService.deleteAccount(mobileNumber);
