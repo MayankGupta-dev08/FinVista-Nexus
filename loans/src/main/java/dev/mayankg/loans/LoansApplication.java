@@ -1,4 +1,4 @@
-package dev.mayankg.accounts;
+package dev.mayankg.loans;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -12,15 +12,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 /**
  * @author Mayank Gupta
- * @Link: <a href=http://localhost:8080/swagger-ui/index.html>Swagger for Accounts Microservice</a>
+ * @Link: <a href=http://localhost:8090/swagger-ui/index.html>Swagger for Loans Microservice</a>
  */
-/*@ComponentScans({ @ComponentScan("dev.mayankg.accounts.controller") })
-@EnableJpaRepositories("dev.mayankg.accounts.repository")
-@EntityScan("dev.mayankg.accounts.model")*/
 @OpenAPIDefinition(
         info = @Info(
-                title = "FinVista Nexus's Accounts microservice REST API Documentation",
-                description = "FinVista Nexus - Accounts microservice REST API Documentation",
+                title = "FinVista Nexus's Loans microservice REST API Documentation",
+                description = "FinVista Nexus - Loans microservice REST API Documentation",
                 version = "v1",
                 contact = @Contact(
                         name = "Mayank Gupta",
@@ -33,19 +30,19 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
                 )
         ),
         externalDocs = @ExternalDocumentation(
-                description = "FinVista Nexus - Accounts microservice REST API Documentation",
+                description = "FinVista Nexus - Loans microservice REST API Documentation",
                 url = "https://www.finvista-nexus.com/swagger-ui.html"
         ),
         servers = @Server(
-                description = "Accounts server"
+                description = "Loans server"
         )
 )
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
-public class AccountsApplication {
+public class LoansApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AccountsApplication.class, args);
+        SpringApplication.run(LoansApplication.class, args);
     }
 
 }

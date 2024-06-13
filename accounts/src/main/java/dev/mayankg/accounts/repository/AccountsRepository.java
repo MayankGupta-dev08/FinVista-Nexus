@@ -12,8 +12,19 @@ import java.util.Optional;
  */
 public interface AccountsRepository extends JpaRepository<Accounts, Long> {
 
+    /**
+     * finds accounts on the basis of customerId
+     *
+     * @param customerId
+     * @return optional of accounts
+     */
     Optional<Accounts> findByCustomerId(Long customerId);
 
+    /**
+     * deletes accounts on the basis of customerId
+     *
+     * @param customerId
+     */
     @Modifying
     @Transactional
     void deleteByCustomerId(Long customerId);

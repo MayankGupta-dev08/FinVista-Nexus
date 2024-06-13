@@ -1,4 +1,4 @@
-package dev.mayankg.accounts;
+package dev.mayankg.cards;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -12,15 +12,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 /**
  * @author Mayank Gupta
- * @Link: <a href=http://localhost:8080/swagger-ui/index.html>Swagger for Accounts Microservice</a>
+ * @Link: <a href=http://localhost:9000/swagger-ui/index.html>Swagger for Cards Microservice</a>
  */
-/*@ComponentScans({ @ComponentScan("dev.mayankg.accounts.controller") })
-@EnableJpaRepositories("dev.mayankg.accounts.repository")
-@EntityScan("dev.mayankg.accounts.model")*/
 @OpenAPIDefinition(
         info = @Info(
-                title = "FinVista Nexus's Accounts microservice REST API Documentation",
-                description = "FinVista Nexus - Accounts microservice REST API Documentation",
+                title = "FinVista Nexus's Cards microservice REST API Documentation",
+                description = "FinVista Nexus - Cards microservice REST API Documentation",
                 version = "v1",
                 contact = @Contact(
                         name = "Mayank Gupta",
@@ -33,19 +30,19 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
                 )
         ),
         externalDocs = @ExternalDocumentation(
-                description = "FinVista Nexus - Accounts microservice REST API Documentation",
+                description = "FinVista Nexus - Cards microservice REST API Documentation",
                 url = "https://www.finvista-nexus.com/swagger-ui.html"
         ),
         servers = @Server(
-                description = "Accounts server"
+                description = "Cards server"
         )
 )
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
-public class AccountsApplication {
+public class CardsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AccountsApplication.class, args);
+        SpringApplication.run(CardsApplication.class, args);
     }
 
 }

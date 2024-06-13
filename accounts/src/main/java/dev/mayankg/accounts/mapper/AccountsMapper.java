@@ -3,10 +3,10 @@ package dev.mayankg.accounts.mapper;
 import dev.mayankg.accounts.dto.AccountsDto;
 import dev.mayankg.accounts.entity.Accounts;
 
-@SuppressWarnings("unused")
-public class AccountsMapper {
+public final class AccountsMapper {
 
     private AccountsMapper() {
+        // restricting instantiation
     }
 
     public static Accounts mapToAccounts(AccountsDto accountsDto) {
