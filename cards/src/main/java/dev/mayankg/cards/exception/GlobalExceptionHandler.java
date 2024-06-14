@@ -1,6 +1,6 @@
-package dev.mayankg.loans.exception;
+package dev.mayankg.cards.exception;
 
-import dev.mayankg.loans.dto.ErrorResponseDto;
+import dev.mayankg.cards.dto.ErrorResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -57,8 +57,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(LoanAlreadyExistingException.class)
-    public ResponseEntity<ErrorResponseDto> handleLoanAlreadyExistingException(LoanAlreadyExistingException exception, WebRequest webRequest) {
+    @ExceptionHandler(CardAlreadyExistingException.class)
+    public ResponseEntity<ErrorResponseDto> handleLoanAlreadyExistingException(CardAlreadyExistingException exception, WebRequest webRequest) {
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(
                 webRequest.getDescription(false),
                 HttpStatus.BAD_REQUEST,
