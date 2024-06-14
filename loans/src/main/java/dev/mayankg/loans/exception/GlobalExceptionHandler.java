@@ -43,7 +43,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             validationErrors.put(field, message);
         });
 
-        return super.handleMethodArgumentNotValid(ex, headers, status, request);
+        return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
