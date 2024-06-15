@@ -46,6 +46,12 @@ docker build . -t devmayank8/finvistanexus-accounts:v1
 docker run -d --name fvn-accounts -p 8080:8080 devmayank8/finvistanexus-accounts:v1
 ```
 
+- To run a container with a particular name using that same docker image in detached & debug mode
+
+```shell
+docker run -d --name fvn-accounts -p 8080:8080 -p 5005:5005 devmayank8/finvistanexus-accounts:v1
+```
+
 ---
 
 ## Important Links
