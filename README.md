@@ -68,18 +68,90 @@ docker image push docker.io/devmayank8/finvistanexus-accounts:1.0.1-SNAPSHOT
 docker pull devmayank8/finvistanexus-accounts:1.0.1-SNAPSHOT
 ```
 
+- To show all the running and stopped containers
+
+```shell
+docker ps -a
+```
+
+- To login into the docker hub container registry
+
+```shell
+docker login -u <username>
+```
+
+- To logout from the docker hub container registry
+
+```shell
+docker logout
+```
+
+- To display the intermediate layers & cmds that were executed when building the image
+
+```shell
+docker history <image_name>
+```
+
+- To remove a particular docker image
+
+```shell
+docker rm <image_id>
+```
+
+- To follow the log output of a particular container
+
+```shell
+docker conatiner logs -f <container_id>
+```
+
+- To open bash inside a running container
+
+```shell
+docker exec -it <container_name> bash
+```
+
+- To inspect a particular container
+
+```shell
+docker conatiner inspect <container_id>
+```
+
+- To show all the container statistics
+
+```shell
+docker container stats
+```
+
+- To remove all the stopped containers
+
+```shell
+docker conatiner prune
+```
+
+- To remove all the unused containers, volumes, networks and dangling images
+
+```shell
+docker system prune
+```
+
 ### Docker Compose Commands
 
-- To start the container using a `docker-compose.yml` file
+- To start the containers using a `docker-compose.yml` file
 
 ```shell
 docker-compose up -d
 ```
 
-- To stop and delete the container including volumes
+- To stop and delete the containers including volumes
 
 ```shell
 docker-compose down -v
+```
+
+- To stop the containers including volumes
+
+```shell
+docker-compose stop
 ```
 
 ---
