@@ -1,0 +1,43 @@
+services:
+  accounts:
+    image: devmayank8/finvistanexus-accounts:1.0.1-SNAPSHOT
+    container_name: fnv-accounts-ms
+    ports:
+      - 8080:8080 #MAIN
+      - 5005:5005 #DEBUG
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - finvista-nexus-bank
+
+  loans:
+    image: devmayank8/finvistanexus-loans:1.0.1-SNAPSHOT
+    container_name: fnv-loans-ms
+    ports:
+      - 8090:8090 #MAIN
+      - 5010:5010 #DEBUG
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - finvista-nexus-bank
+
+  cards:
+    image: devmayank8/finvistanexus-cards:1.0.1-SNAPSHOT
+    container_name: fnv-cards-ms
+    ports:
+      - 9000:9000 #MAIN
+      - 5015:5015 #DEBUG
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - finvista-nexus-bank
+
+networks:
+  finvista-nexus-bank:
+    driver: "bridge"
