@@ -18,3 +18,19 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  config:
+    import:
+      - "application_prod.yml"
+      - "application_qa.yml"
+
+build:
+  version: 3.0.2
+
+cards:
+  message: "Welcome to FinVista Nexus Bank's Cards related dev APIs "
+  contactDetails:
+    name: "Avery Blaze - Tech Wizard"
+    email: "avery@finvistanexus.com"
+  onCallSupport:
+    - (555) 765-4321
+    - (555) 876-5432

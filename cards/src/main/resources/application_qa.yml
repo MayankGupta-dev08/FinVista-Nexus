@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "qa"
+
+build:
+  version: 2.3.0
+
+cards:
+  message: "Welcome to FinVista Nexus Bank's Cards related qa APIs "
+  contactDetails:
+    name: "Phoenix Sky - QA Guru"
+    email: "phoenix@finvistanexus.com"
+  onCallSupport:
+    - (555) 654-3210
+    - (555) 543-2109

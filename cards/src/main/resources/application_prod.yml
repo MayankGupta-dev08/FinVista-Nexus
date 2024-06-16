@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+build:
+  version: 1.1.2
+
+cards:
+  message: "Welcome to FinVista Nexus Bank's Cards related prod APIs "
+  contactDetails:
+    name: "Dakota Steel - Code Master"
+    email: "dakota@finvistanexus.com"
+  onCallSupport:
+    - (555) 987-6543
+    - (555) 876-5432
