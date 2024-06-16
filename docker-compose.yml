@@ -1,6 +1,6 @@
 services:
   accounts:
-    image: devmayank8/finvistanexus-accounts:1.0.1-SNAPSHOT
+    image: devmayank8/finvistanexus-accounts:1.0.2-SNAPSHOT
     container_name: fnv-accounts-ms
     ports:
       - 8080:8080 #MAIN
@@ -13,7 +13,7 @@ services:
       - finvista-nexus-bank
 
   loans:
-    image: devmayank8/finvistanexus-loans:1.0.1-SNAPSHOT
+    image: devmayank8/finvistanexus-loans:1.0.2-SNAPSHOT
     container_name: fnv-loans-ms
     ports:
       - 8090:8090 #MAIN
@@ -26,7 +26,7 @@ services:
       - finvista-nexus-bank
 
   cards:
-    image: devmayank8/finvistanexus-cards:1.0.1-SNAPSHOT
+    image: devmayank8/finvistanexus-cards:1.0.2-SNAPSHOT
     container_name: fnv-cards-ms
     ports:
       - 9000:9000 #MAIN
