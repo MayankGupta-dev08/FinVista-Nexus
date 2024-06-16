@@ -41,17 +41,17 @@ public class AccountsController {
     @Value("${build.version}")
     private String buildVersion;
 
-    @Autowired
-    private Environment environment;
+    private final Environment environment;
 
-    @Autowired
-    private AccountsContactInfoDto accountsContactInfoDto;
+    private final AccountsContactInfoDto accountsContactInfoDto;
 
     private final IAccountsService accountsService;
 
     @Autowired
-    public AccountsController(IAccountsService accountsService) {
+    public AccountsController(Environment environment, AccountsContactInfoDto accountsContactInfoDto, IAccountsService accountsService) {
+        this.environment = environment;
         this.accountsService = accountsService;
+        this.accountsContactInfoDto = accountsContactInfoDto;
     }
 
     @Operation(
