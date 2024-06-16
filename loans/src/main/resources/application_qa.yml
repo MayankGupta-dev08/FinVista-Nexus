@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "qa"
+
+build:
+  version: 2.2.4
+
+loans:
+  message: "Welcome to FinVista Nexus Bank's Loans related qa APIs "
+  contactDetails:
+    name: "Reese Vortex - Software Sage"
+    email: "reese@finvistanexus.com"
+  onCallSupport:
+    - (555) 543-2198
+    - (555) 432-1987

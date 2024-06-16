@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+build:
+  version: 1.3.0
+
+loans:
+  message: "Welcome to FinVista Nexus Bank's Loans related prod APIs "
+  contactDetails:
+    name: "Harper Stone - Architect"
+    email: "harper@finvistanexus.com"
+  onCallSupport:
+    - (555) 432-1098
+    - (555) 321-0987
