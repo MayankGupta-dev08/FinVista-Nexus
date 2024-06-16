@@ -156,7 +156,7 @@ docker-compose stop
 
 ---
 
-## Modifying Run/Debug Configurations using spring profiles & through three different ways
+## Modifying Run/Debug Configurations using spring profiles
 
 - **NOTE**: Priority - CLI arguments > JVM options > Environment Variables
 
