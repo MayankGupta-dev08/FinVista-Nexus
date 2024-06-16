@@ -5,10 +5,17 @@ spring:
   application:
     name: "configserver"
   profiles:
-    active: native
+    # active: native
+    active: git
   cloud:
     config:
       server:
-        native:
+        # native:
           # search-locations: "classpath:/config"
-          search-locations: "file:///E://Coding//fvn-config"
+          # search-locations: "file:///E://Coding//fvn-config"
+        git:
+          uri: "https://github.com/MayankGupta-dev08/fvn-config.git"
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
