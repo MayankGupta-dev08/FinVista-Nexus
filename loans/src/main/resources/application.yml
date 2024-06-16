@@ -2,6 +2,10 @@ server:
   port: 8090
 
 spring:
+  application:
+    name: "loans"
+  profiles:
+    active: "prod"
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
@@ -16,18 +20,10 @@ spring:
       ddl-auto: update
     show-sql: true
   config:
-    import:
-      - "application_prod.yml"
-      - "application_qa.yml"
+    import: "optional:configserver:http://localhost:8071/"
 
-build:
-  version: 3.4.1
-
-loans:
-  message: "Welcome to FinVista Nexus Bank's Loans related dev APIs "
-  contactDetails:
-    name: "River Knight - Backend Specialist"
-    email: "river@finvistanexus.com"
-  onCallSupport:
-    - (555) 321-0987
-    - (555) 210-9876
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

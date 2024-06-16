@@ -1,0 +1,11 @@
+build:
+  version: 3.0.0
+
+accounts:
+  message: "Welcome to FinVista Nexus Bank's Accounts related dev APIs "
+  contactDetails:
+    name: "Alex Nightshade - Developer"
+    email: "alex@finvistanexus.com"
+  onCallSupport:
+    - (555) 666-7890
+    - (555) 777-8901

@@ -1,0 +1,11 @@
+build:
+  version: 3.4.1
+
+loans:
+  message: "Welcome to FinVista Nexus Bank's Loans related dev APIs "
+  contactDetails:
+    name: "River Knight - Backend Specialist"
+    email: "river@finvistanexus.com"
+  onCallSupport:
+    - (555) 321-0987
+    - (555) 210-9876
