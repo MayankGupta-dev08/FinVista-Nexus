@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "qa"
+
+build:
+  version: 2.0.0
+
+accounts:
+  message: "Welcome to FinVista Nexus Bank's Accounts related qa APIs "
+  contactDetails:
+    name: "Jordan Ember - QA Engineer"
+    email: "jordan@finvistanexus.com"
+  onCallSupport:
+    - (555) 888-2345
+    - (555) 999-3456

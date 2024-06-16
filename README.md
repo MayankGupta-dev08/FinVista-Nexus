@@ -156,6 +156,42 @@ docker-compose stop
 
 ---
 
+## Modifying Run/Debug Configurations using spring profiles & through three different ways
+
+- **NOTE**: Priority - CLI arguments > JVM options > Environment Variables
+
+### Using CLI Arguments
+
+- activating `prod` profile instead of default
+
+```shell
+--spring.profiles.active=prod
+```
+
+- activating `qa` profile instead of default spring profile and changing the value of `build.version`
+
+```shell
+--spring.profiles.active=prod --build.version=2.0.1
+```
+
+### Using JVM option of passing the arguments
+
+- activating `qa` profile instead of default spring profile and changing the value of `build.version`
+
+```shell
+-Dspring.profiles.active=qa -Dbuild.version=3.0.1
+```
+
+### Using Environment variables
+
+- activating `prod` profile instead of default spring profile and changing the value of `build.version`
+
+```shell
+SPRING_PROFILES_ACTIVE=prod;BUILD.VERSION=5.1.0;
+```
+
+---
+
 ## Important Links
 
 ### Setting Up Your Spring Boot Project
