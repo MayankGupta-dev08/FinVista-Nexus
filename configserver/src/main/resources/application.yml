@@ -11,8 +11,8 @@ spring:
     config:
       server:
         # native:
-          # search-locations: "classpath:/config"
-          # search-locations: "file:///E://Coding//fvn-config"
+        # search-locations: "classpath:/config"
+        # search-locations: "file:///E://Coding//fvn-config"
         git:
           uri: "https://github.com/MayankGupta-dev08/fvn-config.git"
           default-label: main
@@ -21,5 +21,8 @@ spring:
           force-pull: true
 
 
+# key is mentioned here, but in case of actual business app,
+# it will be passed as environment variable and
+# the config server will be deployed behind the firewall of the company.
 encrypt:
   key: "u2ZY4UkzZfhcC1dUx/PD1ZEpFv2XuPmdOzGI/7nlnXY="

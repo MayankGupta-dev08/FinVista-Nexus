@@ -43,17 +43,20 @@ public class LoansController {
 
     private final Environment environment;
 
-    private final LoansContactInfoDto loansContactInfoDto;
-
     private final ILoansService loansService;
 
+    private LoansContactInfoDto loansContactInfoDto;
+
     @Autowired
-    public LoansController(Environment environment, LoansContactInfoDto loansContactInfoDto, ILoansService loansService) {
+    public LoansController(Environment environment, ILoansService loansService) {
         this.environment = environment;
         this.loansService = loansService;
-        this.loansContactInfoDto = loansContactInfoDto;
     }
 
+    @Autowired
+    public void setLoansContactInfoDto(LoansContactInfoDto loansContactInfoDto) {
+        this.loansContactInfoDto = loansContactInfoDto;
+    }
 
     @Operation(
             summary = "Create Loan REST API",
