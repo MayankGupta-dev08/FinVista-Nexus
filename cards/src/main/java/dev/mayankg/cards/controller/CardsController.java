@@ -40,14 +40,18 @@ public class CardsController {
 
     private final Environment environment;
 
-    private final CardsContactInfoDto cardsContactInfoDto;
-
     private final ICardsService cardsService;
 
+    private CardsContactInfoDto cardsContactInfoDto;
+
     @Autowired
-    public CardsController(Environment environment, CardsContactInfoDto cardsContactInfoDto, ICardsService cardsService) {
+    public CardsController(Environment environment, ICardsService cardsService) {
         this.environment = environment;
         this.cardsService = cardsService;
+    }
+
+    @Autowired
+    public void setCardsContactInfoDto(CardsContactInfoDto cardsContactInfoDto) {
         this.cardsContactInfoDto = cardsContactInfoDto;
     }
 
