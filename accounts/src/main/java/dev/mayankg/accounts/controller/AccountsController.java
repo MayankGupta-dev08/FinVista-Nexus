@@ -43,14 +43,18 @@ public class AccountsController {
 
     private final Environment environment;
 
-    private final AccountsContactInfoDto accountsContactInfoDto;
-
     private final IAccountsService accountsService;
 
+    private AccountsContactInfoDto accountsContactInfoDto;
+
     @Autowired
-    public AccountsController(Environment environment, AccountsContactInfoDto accountsContactInfoDto, IAccountsService accountsService) {
+    public AccountsController(Environment environment, IAccountsService accountsService) {
         this.environment = environment;
         this.accountsService = accountsService;
+    }
+
+    @Autowired
+    public void setAccountsContactInfoDto(AccountsContactInfoDto accountsContactInfoDto) {
         this.accountsContactInfoDto = accountsContactInfoDto;
     }
 
