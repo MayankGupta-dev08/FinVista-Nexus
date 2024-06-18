@@ -1,19 +1,76 @@
-version: '3.9'
-
 services:
   rabbit:
     image: rabbitmq:3.13-management
     container_name: fvn-rabbitmq-ms
     hostname: rabbitmq
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "5672:5672" #HOST:CONTAINER
+      - "15672:15672"  #HOST:CONTAINER
     healthcheck:
       test: rabbitmq-diagnostics check_port_connectivity
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 5s
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - fvn-network
+
+  accounts-db:
+    image: mysql
+    container_name: fvn-accounts-db
+    ports:
+      - "3306:3306"  #HOST:CONTAINER
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: accounts-db
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 10s
+    volumes:
+      - accounts-db-data:/var/lib/mysql
+    networks:
+      - fvn-network
+
+  loans-db:
+    image: mysql
+    container_name: fvn-loans-db
+    ports:
+      - "3307:3306"  #HOST:CONTAINER
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: loans-db
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 10s
+    volumes:
+      - loans-db-data:/var/lib/mysql
+    networks:
+      - fvn-network
+
+  cards-db:
+    image: mysql
+    container_name: fvn-cards-db
+    ports:
+      - "3308:3306"  #HOST:CONTAINER
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cards-db
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 10s
+    volumes:
+      - cards-db-data:/var/lib/mysql
     networks:
       - fvn-network
 
@@ -21,7 +78,7 @@ services:
     image: devmayank8/finvistanexus-configserver:2.2.0-SNAPSHOT
     container_name: fvn-configserver-ms
     ports:
-      - "8071:8071" #MAIN
+      - "8071:8071"  #HOST:CONTAINER
     environment:
       SPRING_RABBITMQ_HOST: rabbit
     depends_on:
@@ -48,11 +105,16 @@ services:
       - "5005:5005" #DEBUG
     environment:
       SPRING_APPLICATION_NAME: accounts
-      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       SPRING_PROFILES_ACTIVE: default
       SPRING_RABBITMQ_HOST: rabbit
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+      SPRING_DATASOURCE_URL: jdbc:mysql://accounts-db:3306/accounts-db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
     depends_on:
       configserver:
+        condition: service_healthy
+      accounts-db:
         condition: service_healthy
     deploy:
       resources:
@@ -69,11 +131,16 @@ services:
       - "5010:5010" #DEBUG
     environment:
       SPRING_APPLICATION_NAME: loans
-      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       SPRING_PROFILES_ACTIVE: default
       SPRING_RABBITMQ_HOST: rabbit
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+      SPRING_DATASOURCE_URL: jdbc:mysql://loans-db:3306/loans-db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
     depends_on:
       configserver:
+        condition: service_healthy
+      loans-db:
         condition: service_healthy
     deploy:
       resources:
@@ -90,11 +157,16 @@ services:
       - "5015:5015" #DEBUG
     environment:
       SPRING_APPLICATION_NAME: cards
-      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       SPRING_PROFILES_ACTIVE: default
       SPRING_RABBITMQ_HOST: rabbit
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+      SPRING_DATASOURCE_URL: jdbc:mysql://cards-db:3306/cards-db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
     depends_on:
       configserver:
+        condition: service_healthy
+      cards-db:
         condition: service_healthy
     deploy:
       resources:
@@ -102,6 +174,12 @@ services:
           memory: 700m
     networks:
       - fvn-network
+
+volumes:
+  accounts-db-data:
+  loans-db-data:
+  cards-db-data:
+  rabbitmq-data:
 
 networks:
   fvn-network:
