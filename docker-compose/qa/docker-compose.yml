@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   accounts-db:
     image: mysql
@@ -8,6 +6,8 @@ services:
       - "3306:3306"
     environment:
       MYSQL_DATABASE: accounts-db
+    volumes:
+      - accounts-db-data:/var/lib/mysql
     extends:
       file: common-config.yml
       service: microservice-db-config
@@ -19,6 +19,8 @@ services:
       - "3307:3306"
     environment:
       MYSQL_DATABASE: loans-db
+    volumes:
+      - loans-db-data:/var/lib/mysql
     extends:
       file: common-config.yml
       service: microservice-db-config
@@ -30,6 +32,8 @@ services:
       - "3308:3306"
     environment:
       MYSQL_DATABASE: cards-db
+    volumes:
+      - cards-db-data:/var/lib/mysql
     extends:
       file: common-config.yml
       service: microservice-db-config
@@ -47,6 +51,8 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
     extends:
       file: common-config.yml
       service: network-deploy-service
@@ -123,6 +129,12 @@ services:
     extends:
       file: common-config.yml
       service: microservice-configserver-config
+
+volumes:
+  accounts-db-data:
+  loans-db-data:
+  cards-db-data:
+  rabbitmq-data:
 
 networks:
   fvn-network:
