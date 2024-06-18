@@ -105,7 +105,7 @@ services:
       - "5005:5005" #DEBUG
     environment:
       SPRING_APPLICATION_NAME: accounts
-      SPRING_PROFILES_ACTIVE: default
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_RABBITMQ_HOST: rabbit
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       SPRING_DATASOURCE_URL: jdbc:mysql://accounts-db:3306/accounts-db
@@ -131,7 +131,7 @@ services:
       - "5010:5010" #DEBUG
     environment:
       SPRING_APPLICATION_NAME: loans
-      SPRING_PROFILES_ACTIVE: default
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_RABBITMQ_HOST: rabbit
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       SPRING_DATASOURCE_URL: jdbc:mysql://loans-db:3306/loans-db
@@ -157,7 +157,7 @@ services:
       - "5015:5015" #DEBUG
     environment:
       SPRING_APPLICATION_NAME: cards
-      SPRING_PROFILES_ACTIVE: default
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_RABBITMQ_HOST: rabbit
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       SPRING_DATASOURCE_URL: jdbc:mysql://cards-db:3306/cards-db
