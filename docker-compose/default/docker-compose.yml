@@ -19,7 +19,7 @@ services:
       service: network-deploy-service
 
   configserver:
-    image: devmayank8/finvistanexus-configserver:2.1.0-SNAPSHOT
+    image: devmayank8/finvistanexus-configserver:3.0.0-SNAPSHOT
     container_name: fvn-configserver-ms
     ports:
       - "8071:8071" #MAIN
@@ -37,7 +37,7 @@ services:
       service: microservice-base-config
 
   accounts:
-    image: devmayank8/finvistanexus-accounts:2.1.0-SNAPSHOT
+    image: devmayank8/finvistanexus-accounts:3.0.0-SNAPSHOT
     container_name: fvn-accounts-ms
     ports:
       - "8080:8080" #MAIN
@@ -53,7 +53,7 @@ services:
 
 
   loans:
-    image: devmayank8/finvistanexus-loans:2.1.0-SNAPSHOT
+    image: devmayank8/finvistanexus-loans:3.0.0-SNAPSHOT
     container_name: fvn-loans-ms
     ports:
       - "8090:8090" #MAIN
@@ -68,7 +68,7 @@ services:
       service: microservice-configserver-config
 
   cards:
-    image: devmayank8/finvistanexus-cards:2.1.0-SNAPSHOT
+    image: devmayank8/finvistanexus-cards:3.0.0-SNAPSHOT
     container_name: fvn-cards-ms
     ports:
       - "9000:9000" #MAIN
