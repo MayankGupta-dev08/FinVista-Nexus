@@ -64,6 +64,7 @@ services:
       - "5005:5005"
     environment:
       SPRING_APPLICATION_NAME: accounts
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
     depends_on:
       configserver:
         condition: service_healthy
@@ -81,6 +82,7 @@ services:
       - "5010:5010"
     environment:
       SPRING_APPLICATION_NAME: loans
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010"
     depends_on:
       configserver:
         condition: service_healthy
@@ -98,6 +100,7 @@ services:
       - "5015:5015"
     environment:
       SPRING_APPLICATION_NAME: cards
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5015"
     depends_on:
       configserver:
         condition: service_healthy
