@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   rabbit:
     image: rabbitmq:3.13-management
@@ -22,7 +20,7 @@ services:
     image: devmayank8/finvistanexus-configserver:3.0.0-SNAPSHOT
     container_name: fvn-configserver-ms
     ports:
-      - "8071:8071" #MAIN
+      - "8071:8071"
     depends_on:
       rabbit:
         condition: service_healthy
@@ -36,51 +34,78 @@ services:
       file: common-config.yml
       service: microservice-base-config
 
+  eurekaserver:
+    image: devmayank8/finvistanexus-eurekaserver:3.0.0-SNAPSHOT
+    container_name: fvn-eurekaserver-ms
+    ports:
+      - "8070:8070"
+    environment:
+      SPRING_APPLICATION_NAME: eurekaserver
+    depends_on:
+      rabbit:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
   accounts:
     image: devmayank8/finvistanexus-accounts:3.0.0-SNAPSHOT
     container_name: fvn-accounts-ms
     ports:
-      - "8080:8080" #MAIN
-      - "5005:5005" #DEBUG
+      - "8080:8080"
+      - "5005:5005"
     environment:
       SPRING_APPLICATION_NAME: accounts
     depends_on:
       configserver:
         condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
-
+      service: microservice-eurekaserver-config
 
   loans:
     image: devmayank8/finvistanexus-loans:3.0.0-SNAPSHOT
     container_name: fvn-loans-ms
     ports:
-      - "8090:8090" #MAIN
-      - "5010:5010" #DEBUG
+      - "8090:8090"
+      - "5010:5010"
     environment:
       SPRING_APPLICATION_NAME: loans
     depends_on:
       configserver:
         condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eurekaserver-config
 
   cards:
     image: devmayank8/finvistanexus-cards:3.0.0-SNAPSHOT
     container_name: fvn-cards-ms
     ports:
-      - "9000:9000" #MAIN
-      - "5015:5015" #DEBUG
+      - "9000:9000"
+      - "5015:5015"
     environment:
       SPRING_APPLICATION_NAME: cards
     depends_on:
       configserver:
         condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eurekaserver-config
 
 networks:
   fvn-network:
