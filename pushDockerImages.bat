@@ -6,7 +6,7 @@ set "USERNAME=devmayank8"
 
 REM Set the project and version and repository names
 set "PROJECT=finvistanexus"
-set "VERSION=3.0.0-SNAPSHOT"
+set "VERSION=3.1.0-SNAPSHOT"
 set "REPOSITORY1=accounts"
 set "REPOSITORY2=loans"
 set "REPOSITORY3=cards"

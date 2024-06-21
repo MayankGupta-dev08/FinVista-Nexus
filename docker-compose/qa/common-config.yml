@@ -6,8 +6,6 @@ services:
   microservice-base-config:
     extends:
       service: network-deploy-service
-    environment:
-      SPRING_RABBITMQ_HOST: "rabbit"
     deploy:
       resources:
         limits:
