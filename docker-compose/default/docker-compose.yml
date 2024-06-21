@@ -69,12 +69,6 @@ services:
         condition: service_healthy
       eurekaserver:
         condition: service_healthy
-    healthcheck:
-      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
     extends:
       file: common-config.yml
       service: microservice-eurekaserver-config
@@ -92,12 +86,6 @@ services:
         condition: service_healthy
       eurekaserver:
         condition: service_healthy
-    healthcheck:
-      test: "curl --fail --silent localhost:8090/actuator/health | grep UP || exit 1"
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
     extends:
       file: common-config.yml
       service: microservice-eurekaserver-config
@@ -115,12 +103,6 @@ services:
         condition: service_healthy
       eurekaserver:
         condition: service_healthy
-    healthcheck:
-      test: "curl --fail --silent localhost:9000/actuator/health | grep UP || exit 1"
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
     extends:
       file: common-config.yml
       service: microservice-eurekaserver-config
