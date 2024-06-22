@@ -1,10 +1,10 @@
-package dev.mayankg.configserver;
+package dev.mayankg.eurekaserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GatewayServerApplicationTests {
+class EurekaServerApplicationTests {
 
     @Test
     void contextLoads() {
