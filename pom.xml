@@ -14,7 +14,7 @@
 
     <groupId>dev.mayankg</groupId>
     <artifactId>finvista-nexus</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>3.2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
 
@@ -22,8 +22,9 @@
         <module>configserver</module>
         <module>eurekaserver</module>
         <module>accounts</module>
-        <module>cards</module>
         <module>loans</module>
+        <module>cards</module>
+        <module>gatewayserver</module>
     </modules>
 
 
