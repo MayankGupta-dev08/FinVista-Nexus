@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements ICustomerService {
      * @return Customer Details based on a given mobileNumber
      */
     @Override
-    public CustomerDetailsDto fetchCustomerDetails(String mobileNumber) {
+    public CustomerDetailsDto fetchCustomerDetails(String mobileNumber, String correlationId) {
         log.info("CustomerServiceImpl#fetchCustomerDetails");
         log.info("Fetching customer details for mobile number: {}", mobileNumber);
 
@@ -54,7 +54,7 @@ public class CustomerServiceImpl implements ICustomerService {
 
         // Fetch card details
         try {
-            ResponseEntity<CardsDto> cardsDtoResponseEntity = cardsFeignClient.fetchCardDetails(mobileNumber);
+            ResponseEntity<CardsDto> cardsDtoResponseEntity = cardsFeignClient.fetchCardDetails(correlationId, mobileNumber);
             if (cardsDtoResponseEntity != null && cardsDtoResponseEntity.getBody() != null) {
                 customerDetailsDto.setCardsDto(cardsDtoResponseEntity.getBody());
                 log.debug("Card details found for mobile number {}: {}", mobileNumber, cardsDtoResponseEntity.getBody());
@@ -65,7 +65,7 @@ public class CustomerServiceImpl implements ICustomerService {
 
         // Fetch loan details
         try {
-            ResponseEntity<LoansDto> loansDtoResponseEntity = loansFeignClient.fetchLoansDetails(mobileNumber);
+            ResponseEntity<LoansDto> loansDtoResponseEntity = loansFeignClient.fetchLoansDetails(correlationId, mobileNumber);
             if (loansDtoResponseEntity != null && loansDtoResponseEntity.getBody() != null) {
                 customerDetailsDto.setLoansDto(loansDtoResponseEntity.getBody());
                 log.debug("Loan details found for mobile number {}: {}", mobileNumber, loansDtoResponseEntity.getBody());

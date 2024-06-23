@@ -21,3 +21,9 @@ management:
     health:
       probes:
         enabled: true
+
+logging:
+  level:
+    dev:
+      mayankg:
+        eurekaserver: DEBUG

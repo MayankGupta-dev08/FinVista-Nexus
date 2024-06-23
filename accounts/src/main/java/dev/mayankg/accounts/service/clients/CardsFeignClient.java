@@ -4,6 +4,7 @@ import dev.mayankg.accounts.dto.CardsDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -19,5 +20,8 @@ public interface CardsFeignClient {
      * @return Cards Details of the customer
      */
     @GetMapping("/api/fetch")
-    ResponseEntity<CardsDto> fetchCardDetails(@RequestParam String mobileNumber);
+    ResponseEntity<CardsDto> fetchCardDetails(
+            @RequestHeader("fvnBank-correlation-id") String correlationId,
+            @RequestParam String mobileNumber
+    );
 }

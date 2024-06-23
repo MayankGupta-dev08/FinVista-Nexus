@@ -46,3 +46,10 @@ management:
 # the config server will be deployed behind the firewall of the company.
 encrypt:
   key: "u2ZY4UkzZfhcC1dUx/PD1ZEpFv2XuPmdOzGI/7nlnXY="
+
+
+logging:
+  level:
+    dev:
+      mayankg:
+        configserver: DEBUG

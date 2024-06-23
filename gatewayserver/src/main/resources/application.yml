@@ -38,3 +38,9 @@ info:
     name: "gatewayserver"
     description: "FinVista Nexus Gateway Server Application"
     version: "3.2.0"
+
+logging:
+  level:
+    dev:
+      mayankg:
+        gatewayserver: DEBUG
