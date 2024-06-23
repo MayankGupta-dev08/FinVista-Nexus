@@ -18,17 +18,9 @@ management:
     web:
       exposure:
         include: "*"
-  health:
-    readiness-state:
-      enabled: true
-    liveness-state:
-      enabled: true
   endpoint:
     gateway:
       enabled: true
-    health:
-      probes:
-        enabled: true
   info:
     env:
       enabled: true
@@ -44,3 +36,11 @@ logging:
     dev:
       mayankg:
         gatewayserver: DEBUG
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000
