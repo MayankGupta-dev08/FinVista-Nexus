@@ -12,6 +12,7 @@ set "REPOSITORY2=loans"
 set "REPOSITORY3=cards"
 set "REPOSITORY4=configserver"
 set "REPOSITORY5=eurekaserver"
+set "REPOSITORY6=gatewayserver"
 
 REM Define an array of images
 set images[1]=%USERNAME%/%PROJECT%-%REPOSITORY1%:%VERSION%
@@ -19,9 +20,10 @@ set images[2]=%USERNAME%/%PROJECT%-%REPOSITORY2%:%VERSION%
 set images[3]=%USERNAME%/%PROJECT%-%REPOSITORY3%:%VERSION%
 set images[4]=%USERNAME%/%PROJECT%-%REPOSITORY4%:%VERSION%
 set images[5]=%USERNAME%/%PROJECT%-%REPOSITORY5%:%VERSION%
+set images[6]=%USERNAME%/%PROJECT%-%REPOSITORY6%:%VERSION%
 
 REM Loop through the images and push each one
-for /L %%i in (1,1,5) do (
+for /L %%i in (1,1,6) do (
   echo Pushing !images[%%i]!
   docker push !images[%%i]!
 )
