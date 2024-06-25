@@ -62,6 +62,12 @@ docker run -d --name fvn-accounts -p 9000:9000 -p 5015:5015 devmayank8/finvistan
 docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
 ```
 
+- To run redis using docker image and default credentials
+
+```shell
+docker run --name fvn-redis -p 6379:6379 -d redis
+```
+
 - To push the image to docker hub registry (make sure you are logged in using docker cli or docker desktop)
 
 ```shell
@@ -194,6 +200,14 @@ docker-compose stop
 
 ```shell
 SPRING_PROFILES_ACTIVE=prod;BUILD.VERSION=5.1.0;
+```
+
+## Apache benchmark cmd for load testing/rate limiter scenario
+
+- Making 10 requests, with 2 concurrent requests at the given url
+
+```shell
+ab -n 10 -c 2 -v 3 http://localhost:8072/fvnbank/cards/api/contact-info
 ```
 
 ---
