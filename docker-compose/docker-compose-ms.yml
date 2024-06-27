@@ -16,7 +16,7 @@ services:
       - fvn-network
 
   configserver:
-    image: devmayank8/finvistanexus-configserver:3.3.0-SNAPSHOT
+    image: devmayank8/finvistanexus-configserver:3.4.0-SNAPSHOT
     container_name: fvn-configserver-ms
     ports:
       - "8071:8071" #MAIN
@@ -34,7 +34,7 @@ services:
       - fvn-network
 
   eurekaserver:
-    image: devmayank8/finvistanexus-eurekaserver:3.3.0-SNAPSHOT
+    image: devmayank8/finvistanexus-eurekaserver:3.4.0-SNAPSHOT
     container_name: fvn-eurekaserver-ms
     ports:
       - "8070:8070" #port mapping -> HOST:CONTAINER
@@ -58,7 +58,7 @@ services:
       - fvn-network
 
   accounts:
-    image: devmayank8/finvistanexus-accounts:3.3.0-SNAPSHOT
+    image: devmayank8/finvistanexus-accounts:3.4.0-SNAPSHOT
     container_name: fvn-accounts-ms
     ports:
       - "8080:8080" #MAIN
@@ -88,7 +88,7 @@ services:
       - fvn-network
 
   loans:
-    image: devmayank8/finvistanexus-loans:3.3.0-SNAPSHOT
+    image: devmayank8/finvistanexus-loans:3.4.0-SNAPSHOT
     container_name: fvn-loans-ms
     ports:
       - "8090:8090" #MAIN
@@ -118,7 +118,7 @@ services:
       - fvn-network
 
   cards:
-    image: devmayank8/finvistanexus-cards:3.3.0-SNAPSHOT
+    image: devmayank8/finvistanexus-cards:3.4.0-SNAPSHOT
     container_name: fvn-cards-ms
     ports:
       - "9000:9000" #MAIN
@@ -148,7 +148,7 @@ services:
       - fvn-network
 
   gatewayserver:
-    image: devmayank8/finvistanexus-gatewayserver:3.3.0-SNAPSHOT
+    image: devmayank8/finvistanexus-gatewayserver:3.4.0-SNAPSHOT
     container_name: fvn-gatewayserver-ms
     ports:
       - "8072:8072"

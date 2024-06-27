@@ -6,12 +6,12 @@
     <parent>
         <groupId>dev.mayankg</groupId>
         <artifactId>finvista-nexus</artifactId>
-        <version>3.3.0-SNAPSHOT</version>
+        <version>3.4.0-SNAPSHOT</version>
     </parent>
 
     <groupId>dev.mayankg</groupId>
     <artifactId>gatewayserver</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.4.0-SNAPSHOT</version>
     <name>gatewayserver</name>
     <description>API Gateway (Edge Server) for FinVista Nexus</description>
 
