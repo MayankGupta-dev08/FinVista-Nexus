@@ -7,13 +7,13 @@
     <parent>
         <groupId>dev.mayankg</groupId>
         <artifactId>finvista-nexus</artifactId>
-        <version>3.2.0-SNAPSHOT</version>
+        <version>3.3.0-SNAPSHOT</version>
     </parent>
 
 
     <groupId>dev.mayankg</groupId>
     <artifactId>cards</artifactId>
-    <version>3.2.0-SNAPSHOT</version>
+    <version>3.3.0-SNAPSHOT</version>
     <name>cards</name>
     <description>Cards Microservice of FinVista Nexus</description>
 

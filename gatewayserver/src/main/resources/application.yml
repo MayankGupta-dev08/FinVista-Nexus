@@ -12,23 +12,23 @@ spring:
         locator:
           enabled: false
           lowerCaseServiceId: true
+      connect-timeout: 1000
+      response-timeout: 2s
+  data:
+    redis:
+      connect-timeout: 2s
+      host: localhost
+      port: 6379
+      timeout: 1s
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-  health:
-    readiness-state:
-      enabled: true
-    liveness-state:
-      enabled: true
   endpoint:
     gateway:
       enabled: true
-    health:
-      probes:
-        enabled: true
   info:
     env:
       enabled: true
@@ -44,3 +44,11 @@ logging:
     dev:
       mayankg:
         gatewayserver: DEBUG
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000
