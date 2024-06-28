@@ -2,6 +2,69 @@
 
 Microservices - POC
 
+## Technologies Used
+
+- **MySQL**
+- **Java**
+- **Docker**
+- **Kubernetes**
+- **OAuth2**
+- **Kafka**
+- **Spring Boot**
+- **RabbitMQ**
+- **Maven**
+- **Docker Compose**
+- **REST API**
+- **Helm**
+- **Spring Cloud**
+- **Grafana**
+- **Swagger**
+- **OpenAPI**
+- **Eureka**
+- **Spring Cloud Gateway**
+- **Resilience4j**
+- **OpenTelemetry**
+
+## Project Overview
+
+The FinVista Nexus project is designed to be a scalable and resilient application, utilizing modern technologies to ensure high performance and reliability.
+
+### Database
+
+We use **MySQL** as our primary database to store all persistent data.
+
+### Backend
+
+Our backend services are written in **Java** and built with **Spring Boot**, leveraging **Spring Cloud** for service discovery, configuration, and more. **Eureka** is used for service registration and discovery.
+
+### Messaging and Streaming
+
+For messaging, we use **RabbitMQ**, and for event streaming, we leverage **Kafka**.
+
+### Authentication and Authorization
+
+The project uses **OAuth2** for secure authentication and authorization.
+
+### Deployment and Containerization
+
+All services are containerized using **Docker** and managed with **Kubernetes**. We also use **Docker Compose** for local development and testing.
+
+### API Documentation
+
+APIs are documented using **Swagger** and **OpenAPI** for easy testing and integration.
+
+### Monitoring and Observability
+
+For monitoring, we use **Grafana** along with **OpenTelemetry** for tracing. **Resilience4j** is implemented to ensure fault tolerance in our services.
+
+### API Gateway
+
+**Spring Cloud Gateway** is used as the API Gateway to route requests to various microservices.
+
+### Deployment Tools
+
+We utilize **Helm** for deploying applications on Kubernetes.
+
 ---
 
 ## Maven Commands
