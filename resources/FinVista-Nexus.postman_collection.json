@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "baedc67c-3719-413e-b79d-658733f6235f",
-		"name": "Microservices",
+		"_postman_id": "acb27e93-3366-4aca-a29d-ed2b46119ac6",
+		"name": "FinVista Nexus Microservices",
+		"description": "REST API Collections for the FinVista Nexus Bank Application.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "1599575"
+		"_exporter_id": "36150161"
 	},
 	"item": [
 		{
@@ -16,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Madan Reddy\",\n    \"email\": \"tutor@eazybytes\",\n    \"mobileNumber\": \"4354437687\"\n}",
+							"raw": "{\n    \"name\": \"Mayank Gupta\",\n    \"email\": \"mayankg@gmail.com\",\n    \"mobileNumber\": \"9154437687\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,7 +45,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/fetch?mobileNumber=4354437687",
+							"raw": "http://localhost:8080/api/fetch?mobileNumber=9154437687",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -57,7 +58,17 @@
 							"query": [
 								{
 									"key": "mobileNumber",
-									"value": "4354437687"
+									"value": "4354437687",
+									"disabled": true
+								},
+								{
+									"key": "mobileNumber",
+									"value": "9154437687"
+								},
+								{
+									"key": "mobileNumber",
+									"value": "4354437685",
+									"disabled": true
 								}
 							]
 						}
@@ -71,7 +82,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Madan Mohan\",\n    \"email\": \"tutor@eazybytes\",\n    \"mobileNumber\": \"4354437687\",\n    \"accountsDto\": {\n        \"accountNumber\": 1105557729,\n        \"accountType\": \"Savings\",\n        \"branchAddress\": \"123 Main Street, New York\"\n    }\n}",
+							"raw": "{\n    \"name\": \"Madan Mohan\",\n    \"email\": \"tutor@eazybytes\",\n    \"mobileNumber\": \"4354437687\",\n    \"accountsDto\": {\n        \"accountNumber\": 1726886660,\n        \"accountType\": \"Current\",\n        \"branchAddress\": \"123 Main Street, New York\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -267,12 +278,11 @@
 						"header": [
 							{
 								"key": "eazybank-correlation-id",
-								"value": "43gtrt-trtrrtgf",
-								"type": "text"
+								"value": "43gtrt-trtrrtgf"
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/api/fetchCustomerDetails?mobileNumber=4354437687",
+							"raw": "http://localhost:8080/api/fetchCustomerDetails?mobileNumber=9154437687",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -285,7 +295,12 @@
 							"query": [
 								{
 									"key": "mobileNumber",
-									"value": "4354437687"
+									"value": "4354437687",
+									"disabled": true
+								},
+								{
+									"key": "mobileNumber",
+									"value": "9154437687"
 								}
 							]
 						}
@@ -303,7 +318,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9000/api/create?mobileNumber=4354437687",
+							"raw": "http://localhost:9000/api/create?mobileNumber=9154437687",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -316,7 +331,12 @@
 							"query": [
 								{
 									"key": "mobileNumber",
-									"value": "4354437687"
+									"value": "4354437687",
+									"disabled": true
+								},
+								{
+									"key": "mobileNumber",
+									"value": "9154437687"
 								}
 							]
 						}
@@ -329,7 +349,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9000/api/fetch?mobileNumber=4354437687",
+							"raw": "http://localhost:9000/api/fetch?mobileNumber=9154437687",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -342,7 +362,12 @@
 							"query": [
 								{
 									"key": "mobileNumber",
-									"value": "4354437687"
+									"value": "4354437687",
+									"disabled": true
+								},
+								{
+									"key": "mobileNumber",
+									"value": "9154437687"
 								}
 							]
 						}
@@ -356,7 +381,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"mobileNumber\": \"4354437687\",\n    \"cardNumber\": \"100107091026\",\n    \"cardType\": \"Debit Card\",\n    \"totalLimit\": 100000,\n    \"amountUsed\": 10000,\n    \"availableAmount\": 90000\n}",
+							"raw": "{\n    \"mobileNumber\": \"4354437687\",\n    \"cardNumber\": \"100102474245\",\n    \"cardType\": \"Debit Card\",\n    \"totalLimit\": 100000,\n    \"amountUsed\": 10000,\n    \"availableAmount\": 90000\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -524,7 +549,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8090/api/create?mobileNumber=4354437687",
+							"raw": "http://localhost:8090/api/create?mobileNumber=9154437687",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -537,7 +562,12 @@
 							"query": [
 								{
 									"key": "mobileNumber",
-									"value": "4354437687"
+									"value": "4354437687",
+									"disabled": true
+								},
+								{
+									"key": "mobileNumber",
+									"value": "9154437687"
 								}
 							]
 						}
@@ -550,7 +580,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8090/api/fetch?mobileNumber=4354437687",
+							"raw": "http://localhost:8090/api/fetch?mobileNumber=9154437687",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -563,7 +593,12 @@
 							"query": [
 								{
 									"key": "mobileNumber",
-									"value": "4354437687"
+									"value": "4354437687",
+									"disabled": true
+								},
+								{
+									"key": "mobileNumber",
+									"value": "9154437687"
 								}
 							]
 						}
@@ -807,8 +842,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
+								"value": "application/json"
 							}
 						],
 						"url": {
@@ -924,14 +958,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8072/eazybank/accounts/api/create",
+							"raw": "http://localhost:8072/fvnbank/accounts/api/create",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"accounts",
 								"api",
 								"create"
@@ -946,14 +980,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8072/eazybank/accounts/api/fetch?mobileNumber=4354437688",
+							"raw": "http://localhost:8072/fvnbank/accounts/api/fetch?mobileNumber=4354437687",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"accounts",
 								"api",
 								"fetch"
@@ -961,7 +995,7 @@
 							"query": [
 								{
 									"key": "mobileNumber",
-									"value": "4354437688"
+									"value": "4354437687"
 								}
 							]
 						}
@@ -969,7 +1003,7 @@
 					"response": []
 				},
 				{
-					"name": "eazybank/accounts/api/create",
+					"name": "fvnbank/accounts/api/create",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -983,14 +1017,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8072/eazybank/accounts/api/create",
+							"raw": "http://localhost:8072/fvnbank/accounts/api/create",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"accounts",
 								"api",
 								"create"
@@ -1000,7 +1034,7 @@
 					"response": []
 				},
 				{
-					"name": "eazybank/cards/api/create",
+					"name": "fvnbank/cards/api/create",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1014,14 +1048,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8072/eazybank/cards/api/create?mobileNumber=4354437687",
+							"raw": "http://localhost:8072/fvnbank/cards/api/create?mobileNumber=4354437687",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"cards",
 								"api",
 								"create"
@@ -1037,19 +1071,19 @@
 					"response": []
 				},
 				{
-					"name": "eazybank/loans/api/create",
+					"name": "fvnbank/loans/api/create",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8072/eazybank/loans/api/create?mobileNumber=4354437687",
+							"raw": "http://localhost:8072/fvnbank/loans/api/create?mobileNumber=4354437687",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"loans",
 								"api",
 								"create"
@@ -1070,14 +1104,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8072/eazybank/accounts/api/fetchCustomerDetails?mobileNumber=4354437687",
+							"raw": "http://localhost:8072/fvnbank/accounts/api/fetchCustomerDetails?mobileNumber=4354437687",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"accounts",
 								"api",
 								"fetchCustomerDetails"
@@ -1093,19 +1127,19 @@
 					"response": []
 				},
 				{
-					"name": "eazybank/accounts/api/contact-info",
+					"name": "fvnbank/accounts/api/contact-info",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8072/eazybank/accounts/api/contact-info",
+							"raw": "http://localhost:8072/fvnbank/accounts/api/contact-info",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"accounts",
 								"api",
 								"contact-info"
@@ -1115,19 +1149,19 @@
 					"response": []
 				},
 				{
-					"name": "eazybank/loans/api/contact-info",
+					"name": "fvnbank/loans/api/contact-info",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8072/eazybank/loans/api/contact-info",
+							"raw": "http://localhost:8072/fvnbank/loans/api/contact-info",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"loans",
 								"api",
 								"contact-info"
@@ -1137,19 +1171,19 @@
 					"response": []
 				},
 				{
-					"name": "eazybank/accounts/api/build-info",
+					"name": "fvnbank/accounts/api/build-info",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8072/eazybank/accounts/api/build-info",
+							"raw": "http://localhost:8072/fvnbank/accounts/api/build-info",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"accounts",
 								"api",
 								"build-info"
@@ -1159,19 +1193,19 @@
 					"response": []
 				},
 				{
-					"name": "eazybank/accounts/api/java-version",
+					"name": "fvnbank/accounts/api/java-version",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8072/eazybank/accounts/api/java-version",
+							"raw": "http://localhost:8072/fvnbank/accounts/api/java-version",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"accounts",
 								"api",
 								"java-version"

@@ -74,5 +74,9 @@ Thumbs.db
 node_modules/
 npm-debug.log
 
-# Yarn .
+# Yarn
 yarn-error.log
+
+# Grafana Data
+docker-compose/*/.data/
+docker-compose/.data/

@@ -64,7 +64,7 @@ public final class CardsEnum {
 
     public enum StatusMessage {
         MESSAGE_200("Request processed successfully"),
-        MESSAGE_201("Account created successfully"),
+        MESSAGE_201("Card issued successfully"),
         MESSAGE_417_UPDATE("Update operation failed. Please try again or contact Dev team"),
         MESSAGE_417_DELETE("Delete operation failed. Please try again or contact Dev team"),
         MESSAGE_500("An error occurred. Please try again or contact Dev team");
