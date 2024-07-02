@@ -39,6 +39,9 @@ management:
     health:
       probes:
         enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 
 # key is mentioned here, but in case of actual business app,
