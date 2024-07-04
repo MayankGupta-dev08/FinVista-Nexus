@@ -39,6 +39,9 @@ management:
     health:
       probes:
         enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 
 # key is mentioned here, but in case of actual business app,
@@ -53,3 +56,5 @@ logging:
     dev:
       mayankg:
         configserver: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"

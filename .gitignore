@@ -76,3 +76,7 @@ npm-debug.log
 
 # Yarn
 yarn-error.log
+
+# Grafana Data
+docker-compose/*/.data/
+docker-compose/.data/
