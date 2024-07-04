@@ -10,7 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,13 +26,13 @@ import org.springframework.web.bind.annotation.*;
         name = "REST API for Customers in FinVista Nexus",
         description = "REST API for Customers to fetch Customer details in FinVista Nexus"
 )
-@Slf4j
 @Validated
 @RestController
 @SuppressWarnings("unused")
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CustomerController {
 
+    private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
     private final ICustomerService customerService;
 
     @Autowired
@@ -62,10 +63,10 @@ public class CustomerController {
             @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
             @RequestParam String mobileNumber
     ) {
-        log.info("CustomerController#fetchCustomerDetails");
-        log.debug("fvnBank-correlation-id correlation id found : {}", correlationId);
-
+        logger.debug("CustomerController#fetchCustomerDetails starts");
+        //log.debug("fvnBank-correlation-id correlation id found: {}", correlationId);
         CustomerDetailsDto customerDetailsDto = customerService.fetchCustomerDetails(mobileNumber, correlationId);
+        logger.debug("CustomerController#fetchCustomerDetails ends");
         return ResponseEntity.status(HttpStatus.OK).body(customerDetailsDto);
     }
 }

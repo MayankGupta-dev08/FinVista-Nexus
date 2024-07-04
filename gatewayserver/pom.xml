@@ -21,7 +21,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
         <spring-cloud.version>2023.0.2</spring-cloud.version>
-        <opentelversion>2.3.0</opentelversion>
+        <opentelversion>1.32.0</opentelversion>
         <packaging>jar</packaging>
     </properties>
 

@@ -14,7 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -31,18 +32,18 @@ import org.springframework.web.bind.annotation.*;
         name = "CRUD REST APIs for Loans Service in FinVista Nexus",
         description = "CRUD REST APIs in FinVista Nexus to CREATE, UPDATE, FETCH AND DELETE loan details"
 )
-@Slf4j
 @Validated
 @RestController
 @SuppressWarnings("unused")
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class LoansController {
 
+    private static final Logger logger = LoggerFactory.getLogger(LoansController.class);
+
     @Value("${build.version}")
     private String buildVersion;
 
     private final Environment environment;
-
     private final ILoansService loansService;
 
     private LoansContactInfoDto loansContactInfoDto;
@@ -80,8 +81,7 @@ public class LoansController {
             @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
             @RequestParam String mobileNumber
     ) {
-        log.info("LoansController#createLoan");
-
+        logger.info("LoansController#createLoan");
         loansService.createLoan(mobileNumber);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -113,10 +113,10 @@ public class LoansController {
             @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
             @RequestParam String mobileNumber
     ) {
-        log.info("LoansController#fetchLoan");
-        log.debug("fvnBank-correlation-id correlation id found : {}", correlationId);
-
+        logger.debug("LoansController#fetchLoan starts");
+        //logger.debug("fvnBank-correlation-id correlation id found: {}", correlationId);
         LoansDto loansDto = loansService.fetchLoan(mobileNumber);
+        logger.debug("LoansController#fetchLoan ends");
         return ResponseEntity.status(HttpStatus.OK).body(loansDto);
     }
 
@@ -144,8 +144,7 @@ public class LoansController {
     })
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateLoan(@Valid @RequestBody LoansDto loansDto) {
-        log.info("LoansController#updateLoan");
-
+        logger.info("LoansController#updateLoan");
         boolean isLoanUpdated = loansService.updateLoan(loansDto);
         if (isLoanUpdated)
             return ResponseEntity
@@ -186,8 +185,7 @@ public class LoansController {
             @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
             @RequestParam String mobileNumber
     ) {
-        log.info("LoansController#deleteLoan");
-
+        logger.info("LoansController#deleteLoan");
         boolean isLoanDeleted = loansService.deleteLoan(mobileNumber);
         if (isLoanDeleted)
             return ResponseEntity
@@ -220,7 +218,7 @@ public class LoansController {
     })
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildInfo() {
-        log.info("LoansController#getBuildInfo");
+        logger.info("LoansController#getBuildInfo");
         return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
     }
 
@@ -243,7 +241,7 @@ public class LoansController {
     })
     @GetMapping("/java-version")
     public ResponseEntity<String> getJavaVersion() {
-        log.info("LoansController#getJavaVersion");
+        logger.info("LoansController#getJavaVersion");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("JAVA_HOME"));
@@ -268,7 +266,7 @@ public class LoansController {
     })
     @GetMapping("/contact-info")
     public ResponseEntity<LoansContactInfoDto> getContactInfo() {
-        log.info("LoansController#getContactInfo");
+        logger.info("LoansController#getContactInfo");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(loansContactInfoDto);
