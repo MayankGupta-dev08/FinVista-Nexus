@@ -240,6 +240,7 @@ services:
     ports:
       - "8071:8071"
     environment:
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
       OTEL_SERVICE_NAME: "configserver"
     healthcheck:
       test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
@@ -258,6 +259,7 @@ services:
       - "8070:8070"
     environment:
       SPRING_APPLICATION_NAME: "eurekaserver"
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
       OTEL_SERVICE_NAME: "eurekaserver"
     depends_on:
       configserver:
@@ -281,7 +283,9 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "accounts"
       OTEL_SERVICE_NAME: "accounts"
-      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+      JAVA_TOOL_OPTIONS: >
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+        -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
     depends_on:
       configserver:
         condition: service_healthy
@@ -306,7 +310,9 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "loans"
       OTEL_SERVICE_NAME: "loans"
-      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010"
+      JAVA_TOOL_OPTIONS: >
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010
+        -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
     depends_on:
       configserver:
         condition: service_healthy
@@ -331,7 +337,9 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "cards"
       OTEL_SERVICE_NAME: "cards"
-      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5015"
+      JAVA_TOOL_OPTIONS: >
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5015
+        -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
     depends_on:
       configserver:
         condition: service_healthy
@@ -354,6 +362,7 @@ services:
       - "8072:8072"
     environment:
       SPRING_APPLICATION_NAME: "gatewayserver"
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
       OTEL_SERVICE_NAME: "gatewayserver"
       SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
       SPRING_DATA_REDIS_HOST: redis
