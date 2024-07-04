@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "acb27e93-3366-4aca-a29d-ed2b46119ac6",
-		"name": "FinVista Nexus Microservices",
+		"name": "FinVista-Nexus",
 		"description": "REST API Collections for the FinVista Nexus Bank Application.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "36150161"

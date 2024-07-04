@@ -16,7 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -33,18 +34,18 @@ import org.springframework.web.bind.annotation.*;
         name = "CRUD REST APIs for Accounts in FinVista Nexus",
         description = "CRUD REST APIs in FinVista Nexus to CREATE, UPDATE, FETCH AND DELETE account details"
 )
-@Slf4j
 @RestController
 @Validated
 @SuppressWarnings("unused")
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AccountsController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AccountsController.class);
+
     @Value("${build.version}")
     private String buildVersion;
 
     private final Environment environment;
-
     private final IAccountsService accountsService;
 
     private AccountsContactInfoDto accountsContactInfoDto;
@@ -79,8 +80,7 @@ public class AccountsController {
     })
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CustomerDto customerDto) {
-        log.info("AccountsController#createAccount");
-
+        logger.info("AccountsController#createAccount");
         accountsService.createAccount(customerDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -111,8 +111,7 @@ public class AccountsController {
             @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
             @RequestParam String mobileNumber
     ) {
-        log.info("AccountsController#getAccount");
-
+        logger.info("AccountsController#getAccount");
         CustomerDto customerDto = accountsService.fetchAccount(mobileNumber);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -143,8 +142,7 @@ public class AccountsController {
     })
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateAccount(@Valid @RequestBody CustomerDto customerDto) {
-        log.info("AccountsController#updateAccount");
-
+        logger.info("AccountsController#updateAccount");
         boolean isAccountUpdated = accountsService.updateAccount(customerDto);
         if (isAccountUpdated)
             return ResponseEntity
@@ -185,8 +183,7 @@ public class AccountsController {
             @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
             @RequestParam String mobileNumber
     ) {
-        log.info("AccountsController#deleteAccount");
-
+        logger.info("AccountsController#deleteAccount");
         boolean isAccountDeleted = accountsService.deleteAccount(mobileNumber);
         if (isAccountDeleted)
             return ResponseEntity
@@ -220,12 +217,12 @@ public class AccountsController {
     @Retry(name = "getBuildInfo", fallbackMethod = "getBuildInfoFallback")
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildInfo() {
-        log.info("AccountsController#getBuildInfo");
+        logger.info("AccountsController#getBuildInfo");
         return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
     }
 
     public ResponseEntity<String> getBuildInfoFallback(Throwable throwable) {
-        log.info("AccountsController#getBuildInfoFallback");
+        logger.info("AccountsController#getBuildInfoFallback");
         return ResponseEntity.status(HttpStatus.OK).body("v3.3.0");
     }
 
@@ -249,14 +246,14 @@ public class AccountsController {
     @RateLimiter(name="getJavaVersion", fallbackMethod = "getJavaVersionFallback")
     @GetMapping("/java-version")
     public ResponseEntity<String> getJavaVersion() {
-        log.info("AccountsController#getJavaVersion");
+        logger.info("AccountsController#getJavaVersion");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("JAVA_HOME"));
     }
 
     public ResponseEntity<String> getJavaVersionFallback(Throwable throwable) {
-        log.info("AccountsController#getJavaVersionFallback");
+        logger.info("AccountsController#getJavaVersionFallback");
         return ResponseEntity.status(HttpStatus.OK).body("Java 17");
     }
 
@@ -279,7 +276,7 @@ public class AccountsController {
     })
     @GetMapping("/contact-info")
     public ResponseEntity<AccountsContactInfoDto> getContactInfo() {
-        log.info("AccountsController#getContactInfo");
+        logger.info("AccountsController#getContactInfo");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(accountsContactInfoDto);

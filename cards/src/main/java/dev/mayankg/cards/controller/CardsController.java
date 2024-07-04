@@ -14,7 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -28,18 +29,18 @@ import org.springframework.web.bind.annotation.*;
         name = "CRUD REST APIs for Cards Service in FinVista Nexus",
         description = "CRUD REST APIs in FinVista Nexus to CREATE, UPDATE, FETCH AND DELETE loan details"
 )
-@Slf4j
 @Validated
 @RestController
 @SuppressWarnings("unused")
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CardsController {
 
+    private static final Logger logger = LoggerFactory.getLogger(CardsController.class);
+
     @Value("${build.version}")
     private String buildVersion;
 
     private final Environment environment;
-
     private final ICardsService cardsService;
 
     private CardsContactInfoDto cardsContactInfoDto;
@@ -77,8 +78,7 @@ public class CardsController {
             @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
             @RequestParam String mobileNumber
     ) {
-        log.info("CardsController#createCard");
-
+        logger.info("CardsController#createCard");
         cardsService.createCard(mobileNumber);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -110,10 +110,10 @@ public class CardsController {
             @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
             @RequestParam String mobileNumber
     ) {
-        log.info("CardsController#fetchCard");
-        log.debug("fvnBank-correlation-id correlation id found : {}", correlationId);
-
+        logger.debug("CardsController#fetchCard starts");
+        //logger.debug("fvnBank-correlation-id correlation id found: {}", correlationId);
         CardsDto cardsDto = cardsService.fetchCard(mobileNumber);
+        logger.debug("CardsController#fetchCard ends");
         return ResponseEntity.status(HttpStatus.OK).body(cardsDto);
     }
 
@@ -141,8 +141,7 @@ public class CardsController {
     })
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateCard(@Valid @RequestBody CardsDto loansDto) {
-        log.info("CardsController#updateCard");
-
+        logger.info("CardsController#updateCard");
         boolean isLoanUpdated = cardsService.updateCard(loansDto);
         if (isLoanUpdated)
             return ResponseEntity
@@ -183,8 +182,7 @@ public class CardsController {
             @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
             @RequestParam String mobileNumber
     ) {
-        log.info("CardsController#deleteCard");
-
+        logger.info("CardsController#deleteCard");
         boolean isLoanDeleted = cardsService.deleteCard(mobileNumber);
         if (isLoanDeleted)
             return ResponseEntity
@@ -217,7 +215,7 @@ public class CardsController {
     })
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildInfo() {
-        log.info("CardsController#getBuildInfo");
+        logger.info("CardsController#getBuildInfo");
         return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
     }
 
@@ -240,7 +238,7 @@ public class CardsController {
     })
     @GetMapping("/java-version")
     public ResponseEntity<String> getJavaVersion() {
-        log.info("CardsController#getJavaVersion");
+        logger.info("CardsController#getJavaVersion");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("JAVA_HOME"));
@@ -265,7 +263,7 @@ public class CardsController {
     })
     @GetMapping("/contact-info")
     public ResponseEntity<CardsContactInfoDto> getContactInfo() {
-        log.info("CardsController#getContactInfo");
+        logger.info("CardsController#getContactInfo");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(cardsContactInfoDto);

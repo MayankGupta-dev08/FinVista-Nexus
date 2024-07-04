@@ -82,6 +82,28 @@ services:
     networks:
       - fvn-network
 
+  prometheus:
+    image: prom/prometheus:v2.50.1
+    container_name: fvn-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - fvn-network
+
+  tempo:
+    image: grafana/tempo
+    container_name: fvn-tempo
+    command: -config.file /etc/tempo-config.yml
+    ports:
+      - "3110:3100"
+      - "4317:4317"
+    volumes:
+      - ../observability/tempo/tempo.yml:/etc/tempo-config.yml
+    networks:
+      - fvn-network
+
   grafana:
     image: grafana/grafana:latest
     container_name: fvn-grafana
@@ -95,22 +117,11 @@ services:
       - sh
       - -euc
       - |
-        mkdir -p /etc/grafana/provisioning/datasources
-        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
-        apiVersion: 1
-        datasources:
-          - name: Loki
-            type: loki
-            access: proxy
-            url: http://gateway:3100
-            jsonData:
-              httpHeaderName1: "X-Scope-OrgID"
-            secureJsonData:
-              httpHeaderValue1: "tenant1"
-        EOF
         /run.sh
     ports:
       - "3000:3000"
+    volumes:
+      - ../observability/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
     healthcheck:
       test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1" ]
       interval: 10s
@@ -224,6 +235,12 @@ services:
     container_name: fvn-configserver-ms
     ports:
       - "8071:8071" #MAIN
+    environment:
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
+      OTEL_SERVICE_NAME: "configserver"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_EXPORTER_OTLP_TIMEOUT: 10s
+      OTEL_METRICS_EXPORTER: none
     healthcheck:
       test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
       interval: 10s
@@ -243,8 +260,13 @@ services:
     ports:
       - "8070:8070" #port mapping -> HOST:CONTAINER
     environment:
-      SPRING_APPLICATION_NAME: eurekaserver
+      SPRING_APPLICATION_NAME: "eurekaserver"
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
+      OTEL_SERVICE_NAME: "eurekaserver"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_EXPORTER_OTLP_TIMEOUT: 10s
+      OTEL_METRICS_EXPORTER: none
     depends_on:
       configserver:
         condition: service_healthy
@@ -268,11 +290,17 @@ services:
       - "8080:8080" #MAIN
       - "5005:5005" #DEBUG
     environment:
-      SPRING_APPLICATION_NAME: accounts
+      SPRING_APPLICATION_NAME: "accounts"
       SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
-      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+      JAVA_TOOL_OPTIONS: >
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+        -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
+      OTEL_SERVICE_NAME: "accounts"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_EXPORTER_OTLP_TIMEOUT: 10s
+      OTEL_METRICS_EXPORTER: none
     depends_on:
       configserver:
         condition: service_healthy
@@ -298,11 +326,17 @@ services:
       - "8090:8090" #MAIN
       - "5010:5010" #DEBUG
     environment:
-      SPRING_APPLICATION_NAME: loans
+      SPRING_APPLICATION_NAME: "loans"
       SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
-      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010"
+      JAVA_TOOL_OPTIONS: >
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010
+        -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
+      OTEL_SERVICE_NAME: "loans"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_EXPORTER_OTLP_TIMEOUT: 10s
+      OTEL_METRICS_EXPORTER: none
     depends_on:
       configserver:
         condition: service_healthy
@@ -328,11 +362,17 @@ services:
       - "9000:9000" #MAIN
       - "5015:5015" #DEBUG
     environment:
-      SPRING_APPLICATION_NAME: cards
+      SPRING_APPLICATION_NAME: "cards"
       SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
-      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5015"
+      JAVA_TOOL_OPTIONS: >
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5015
+        -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
+      OTEL_SERVICE_NAME: "cards"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_EXPORTER_OTLP_TIMEOUT: 10s
+      OTEL_METRICS_EXPORTER: none
     depends_on:
       configserver:
         condition: service_healthy
@@ -357,7 +397,7 @@ services:
     ports:
       - "8072:8072"
     environment:
-      SPRING_APPLICATION_NAME: gatewayserver
+      SPRING_APPLICATION_NAME: "gatewayserver"
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
@@ -365,6 +405,11 @@ services:
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
       SPRING_DATA_REDIS_TIMEOUT: 1s
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
+      OTEL_SERVICE_NAME: "gatewayserver"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_EXPORTER_OTLP_TIMEOUT: 10s
+      OTEL_METRICS_EXPORTER: none
     depends_on:
       accounts:
         condition: service_healthy
