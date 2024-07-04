@@ -52,8 +52,9 @@ services:
       - 12345:12345
     depends_on:
       - gateway
-    networks:
-      - fvn-network
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   minio:
     image: minio/minio
@@ -79,8 +80,33 @@ services:
       interval: 15s
       timeout: 20s
       retries: 5
-    networks:
-      - fvn-network
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+  prometheus:
+    image: prom/prometheus:v2.50.1
+    container_name: fvn-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+  tempo:
+    image: grafana/tempo
+    container_name: fvn-tempo
+    command: -config.file /etc/tempo-config.yml
+    ports:
+      - "3110:3100"
+      - "4317:4317"
+    volumes:
+      - ../observability/tempo/tempo.yml:/etc/tempo-config.yml
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   grafana:
     image: grafana/grafana:latest
@@ -95,29 +121,19 @@ services:
       - sh
       - -euc
       - |
-        mkdir -p /etc/grafana/provisioning/datasources
-        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
-        apiVersion: 1
-        datasources:
-          - name: Loki
-            type: loki
-            access: proxy
-            url: http://gateway:3100
-            jsonData:
-              httpHeaderName1: "X-Scope-OrgID"
-            secureJsonData:
-              httpHeaderValue1: "tenant1"
-        EOF
         /run.sh
     ports:
       - "3000:3000"
+    volumes:
+      - ../observability/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
     healthcheck:
       test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - fvn-network
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   backend:
     image: grafana/loki:3.0.0
@@ -130,8 +146,9 @@ services:
     command: "-config.file=/etc/loki/config.yaml -target=backend -legacy-read-mode=false"
     depends_on:
       - gateway
-    networks:
-      - fvn-network
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   gateway:
     image: nginx:latest
@@ -200,8 +217,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - fvn-network
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   redis:
     image: redis
@@ -221,6 +239,9 @@ services:
     container_name: fvn-configserver-ms
     ports:
       - "8071:8071"
+    environment:
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
+      OTEL_SERVICE_NAME: "configserver"
     healthcheck:
       test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
       interval: 10s
@@ -237,7 +258,9 @@ services:
     ports:
       - "8070:8070"
     environment:
-      SPRING_APPLICATION_NAME: eurekaserver
+      SPRING_APPLICATION_NAME: "eurekaserver"
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
+      OTEL_SERVICE_NAME: "eurekaserver"
     depends_on:
       configserver:
         condition: service_healthy
@@ -258,8 +281,11 @@ services:
       - "8080:8080"
       - "5005:5005"
     environment:
-      SPRING_APPLICATION_NAME: accounts
-      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+      SPRING_APPLICATION_NAME: "accounts"
+      OTEL_SERVICE_NAME: "accounts"
+      JAVA_TOOL_OPTIONS: >
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+        -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
     depends_on:
       configserver:
         condition: service_healthy
@@ -282,8 +308,11 @@ services:
       - "8090:8090"
       - "5010:5010"
     environment:
-      SPRING_APPLICATION_NAME: loans
-      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010"
+      SPRING_APPLICATION_NAME: "loans"
+      OTEL_SERVICE_NAME: "loans"
+      JAVA_TOOL_OPTIONS: >
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010
+        -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
     depends_on:
       configserver:
         condition: service_healthy
@@ -306,8 +335,11 @@ services:
       - "9000:9000"
       - "5015:5015"
     environment:
-      SPRING_APPLICATION_NAME: cards
-      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5015"
+      SPRING_APPLICATION_NAME: "cards"
+      OTEL_SERVICE_NAME: "cards"
+      JAVA_TOOL_OPTIONS: >
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5015
+        -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
     depends_on:
       configserver:
         condition: service_healthy
@@ -329,7 +361,9 @@ services:
     ports:
       - "8072:8072"
     environment:
-      SPRING_APPLICATION_NAME: gatewayserver
+      SPRING_APPLICATION_NAME: "gatewayserver"
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
+      OTEL_SERVICE_NAME: "gatewayserver"
       SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
