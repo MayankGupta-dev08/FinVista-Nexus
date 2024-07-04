@@ -8,7 +8,6 @@ Microservices - POC
 - **Java**
 - **Docker**
 - **Kubernetes**
-- **OAuth2**
 - **Kafka**
 - **Spring Boot**
 - **RabbitMQ**
@@ -24,6 +23,9 @@ Microservices - POC
 - **Spring Cloud Gateway**
 - **Resilience4j**
 - **OpenTelemetry**
+- **OAuth2/OpenID Connect**
+- **KeyCloak (IAM)**
+- **Spring Security**
 
 ## Project Overview
 
