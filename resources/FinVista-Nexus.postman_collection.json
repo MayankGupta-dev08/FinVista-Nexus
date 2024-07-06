@@ -1234,12 +1234,12 @@
 								},
 								{
 									"key": "client_id",
-									"value": "eazybank-callcenter-cc",
+									"value": "fvnbank-callcenter-cc",
 									"type": "text"
 								},
 								{
 									"key": "client_secret",
-									"value": "qM8R47968MVVCWVgRiNyYlfvWDYCeyFQ",
+									"value": "5YLXJRkM3wQbZ1USdbVJV84nf3u1e22W",
 									"type": "text"
 								},
 								{
@@ -1278,14 +1278,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8072/eazybank/accounts/api/contact-info",
+							"raw": "http://localhost:8072/fvnbank/accounts/api/contact-info",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"accounts",
 								"api",
 								"contact-info"
@@ -1300,14 +1300,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8072/eazybank/cards/api/java-version",
+							"raw": "http://localhost:8072/fvnbank/cards/api/java-version",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"cards",
 								"api",
 								"java-version"
@@ -1322,14 +1322,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8072/eazybank/loans/api/build-info",
+							"raw": "http://localhost:8072/fvnbank/loans/api/build-info",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"loans",
 								"api",
 								"build-info"
@@ -1353,14 +1353,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8072/eazybank/accounts/api/create",
+							"raw": "http://localhost:8072/fvnbank/accounts/api/create",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"accounts",
 								"api",
 								"create"
@@ -1376,23 +1376,28 @@
 							"type": "oauth2",
 							"oauth2": [
 								{
-									"key": "accessTokenUrl",
-									"value": "http://localhost:7080/realms/master/protocol/openid-connect/token",
-									"type": "string"
-								},
-								{
 									"key": "clientSecret",
-									"value": "wnE8jucNDQRnOcaphC7LNZDK8vHmZHuB",
+									"value": "{{client_secret_cc}}",
 									"type": "string"
 								},
 								{
-									"key": "addTokenTo",
-									"value": "header",
+									"key": "clientId",
+									"value": "{{client_id_cc}}",
 									"type": "string"
 								},
 								{
 									"key": "client_authentication",
 									"value": "body",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "http://localhost:7080/realms/master/protocol/openid-connect/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
 									"type": "string"
 								},
 								{
@@ -1403,11 +1408,6 @@
 								{
 									"key": "tokenName",
 									"value": "clientcredentails_accesstoken",
-									"type": "string"
-								},
-								{
-									"key": "clientId",
-									"value": "eazybank-callcenter-cc",
 									"type": "string"
 								},
 								{
@@ -1429,17 +1429,90 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8072/eazybank/accounts/api/create",
+							"raw": "http://localhost:8072/fvnbank/accounts/api/create",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"accounts",
 								"api",
 								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOANS_POST_ClientCredentials",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientId",
+									"value": "{{client_id_cc}}",
+									"type": "string"
+								},
+								{
+									"key": "clientSecret",
+									"value": "{{client_secret_cc}}",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "http://localhost:7080/realms/master/protocol/openid-connect/token",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "clientcredentails_accesstoken",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								},
+								{
+									"key": "scope",
+									"value": "openid email profile",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8072/fvnbank/loans/api/create?mobileNumber=4354437688",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8072",
+							"path": [
+								"fvnbank",
+								"loans",
+								"api",
+								"create"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "4354437688"
+								}
 							]
 						}
 					},
@@ -1452,23 +1525,23 @@
 							"type": "oauth2",
 							"oauth2": [
 								{
+									"key": "clientId",
+									"value": "{{client_id_cc}}",
+									"type": "string"
+								},
+								{
+									"key": "clientSecret",
+									"value": "{{client_secret_cc}}",
+									"type": "string"
+								},
+								{
 									"key": "accessTokenUrl",
 									"value": "http://localhost:7080/realms/master/protocol/openid-connect/token",
 									"type": "string"
 								},
 								{
-									"key": "clientSecret",
-									"value": "wnE8jucNDQRnOcaphC7LNZDK8vHmZHuB",
-									"type": "string"
-								},
-								{
 									"key": "tokenName",
 									"value": "clientcredentails_accesstoken",
-									"type": "string"
-								},
-								{
-									"key": "clientId",
-									"value": "eazybank-callcenter-cc",
 									"type": "string"
 								},
 								{
@@ -1505,88 +1578,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8072/eazybank/cards/api/create?mobileNumber=4354437688",
+							"raw": "http://localhost:8072/fvnbank/cards/api/create?mobileNumber=4354437688",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"cards",
-								"api",
-								"create"
-							],
-							"query": [
-								{
-									"key": "mobileNumber",
-									"value": "4354437688"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "LOANS_POST_ClientCredentials",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "accessTokenUrl",
-									"value": "http://localhost:7080/realms/master/protocol/openid-connect/token",
-									"type": "string"
-								},
-								{
-									"key": "clientSecret",
-									"value": "wnE8jucNDQRnOcaphC7LNZDK8vHmZHuB",
-									"type": "string"
-								},
-								{
-									"key": "clientId",
-									"value": "eazybank-callcenter-cc",
-									"type": "string"
-								},
-								{
-									"key": "tokenName",
-									"value": "clientcredentails_accesstoken",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "client_authentication",
-									"value": "body",
-									"type": "string"
-								},
-								{
-									"key": "scope",
-									"value": "openid email profile",
-									"type": "string"
-								},
-								{
-									"key": "grant_type",
-									"value": "client_credentials",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8072/eazybank/loans/api/create?mobileNumber=4354437688",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8072",
-							"path": [
-								"eazybank",
-								"loans",
 								"api",
 								"create"
 							],
@@ -1608,17 +1608,17 @@
 							"oauth2": [
 								{
 									"key": "clientSecret",
-									"value": "w0mzY8TPy9ngQcDA4vtu7vZXS1jQWaE2",
+									"value": "{{client_secret_ac}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{client_id_ac}}",
 									"type": "string"
 								},
 								{
 									"key": "client_authentication",
 									"value": "body",
-									"type": "string"
-								},
-								{
-									"key": "clientId",
-									"value": "eazybank-callcenter-ac",
 									"type": "string"
 								},
 								{
@@ -1685,17 +1685,115 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8072/eazybank/accounts/api/create",
+							"raw": "http://localhost:8072/fvnbank/accounts/api/create",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"accounts",
 								"api",
 								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOANS_POST_AuthCode",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{client_secret_ac}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{client_id_ac}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "authcode_accesstoken",
+									"type": "string"
+								},
+								{
+									"key": "scope",
+									"value": "openid email profile",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "http://localhost:7080/realms/master/protocol/openid-connect/auth",
+									"type": "string"
+								},
+								{
+									"key": "tokenType",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "http://localhost:7080/realms/master/protocol/openid-connect/token",
+									"type": "string"
+								},
+								{
+									"key": "state",
+									"value": "ew34er-344fgfg-5gfgfg",
+									"type": "string"
+								},
+								{
+									"key": "useBrowser",
+									"value": true,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8072/fvnbank/loans/api/create?mobileNumber=4354437687",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8072",
+							"path": [
+								"fvnbank",
+								"loans",
+								"api",
+								"create"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "4354437687"
+								}
 							]
 						}
 					},
@@ -1709,12 +1807,12 @@
 							"oauth2": [
 								{
 									"key": "clientSecret",
-									"value": "6AXs2apKOCVj3Q1d1QGTXOIUk1rylAqP",
+									"value": "{{client_secret_ac}}",
 									"type": "string"
 								},
 								{
 									"key": "clientId",
-									"value": "eazybank-callcenter-ac",
+									"value": "{{client_id_ac}}",
 									"type": "string"
 								},
 								{
@@ -1786,113 +1884,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8072/eazybank/cards/api/create?mobileNumber=4354437687",
+							"raw": "http://localhost:8072/fvnbank/cards/api/create?mobileNumber=4354437687",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"cards",
-								"api",
-								"create"
-							],
-							"query": [
-								{
-									"key": "mobileNumber",
-									"value": "4354437687"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "LOANS_POST_AuthCode",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "clientSecret",
-									"value": "6AXs2apKOCVj3Q1d1QGTXOIUk1rylAqP",
-									"type": "string"
-								},
-								{
-									"key": "clientId",
-									"value": "eazybank-callcenter-ac",
-									"type": "string"
-								},
-								{
-									"key": "tokenName",
-									"value": "authcode_accesstoken",
-									"type": "string"
-								},
-								{
-									"key": "scope",
-									"value": "openid email profile",
-									"type": "string"
-								},
-								{
-									"key": "authUrl",
-									"value": "http://localhost:7080/realms/master/protocol/openid-connect/auth",
-									"type": "string"
-								},
-								{
-									"key": "tokenType",
-									"value": "",
-									"type": "string"
-								},
-								{
-									"key": "accessToken",
-									"value": "",
-									"type": "string"
-								},
-								{
-									"key": "grant_type",
-									"value": "authorization_code",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "client_authentication",
-									"value": "body",
-									"type": "string"
-								},
-								{
-									"key": "accessTokenUrl",
-									"value": "http://localhost:7080/realms/master/protocol/openid-connect/token",
-									"type": "string"
-								},
-								{
-									"key": "state",
-									"value": "ew34er-344fgfg-5gfgfg",
-									"type": "string"
-								},
-								{
-									"key": "useBrowser",
-									"value": true,
-									"type": "boolean"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8072/eazybank/loans/api/create?mobileNumber=4354437687",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8072",
-							"path": [
-								"eazybank",
-								"loans",
 								"api",
 								"create"
 							],
@@ -1912,14 +1912,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8072/eazybank/accounts/api/fetchCustomerDetails?mobileNumber=4354437688",
+							"raw": "http://localhost:8072/fvnbank/accounts/api/fetchCustomerDetails?mobileNumber=4354437688",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8072",
 							"path": [
-								"eazybank",
+								"fvnbank",
 								"accounts",
 								"api",
 								"fetchCustomerDetails"
