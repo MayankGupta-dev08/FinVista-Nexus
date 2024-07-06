@@ -8,9 +8,8 @@ services:
       KEYCLOAK_ADMIN: "admin"
       KEYCLOAK_ADMIN_PASSWORD: "admin"
     command: "start-dev"
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
+    networks:
+      - fvn-network
 
   read:
     image: grafana/loki:3.0.0
@@ -65,9 +64,8 @@ services:
       - 12345:12345
     depends_on:
       - gateway
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
+    networks:
+      - fvn-network
 
   minio:
     image: minio/minio
@@ -93,9 +91,8 @@ services:
       interval: 15s
       timeout: 20s
       retries: 5
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
+    networks:
+      - fvn-network
 
   prometheus:
     image: prom/prometheus:v2.50.1
@@ -104,9 +101,8 @@ services:
       - "9090:9090"
     volumes:
       - ../observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
+    networks:
+      - fvn-network
 
   tempo:
     image: grafana/tempo
@@ -117,9 +113,8 @@ services:
       - "4317:4317"
     volumes:
       - ../observability/tempo/tempo.yml:/etc/tempo-config.yml
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
+    networks:
+      - fvn-network
 
   grafana:
     image: grafana/grafana:latest
@@ -144,9 +139,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
+    networks:
+      - fvn-network
 
   backend:
     image: grafana/loki:3.0.0
@@ -159,9 +153,8 @@ services:
     command: "-config.file=/etc/loki/config.yaml -target=backend -legacy-read-mode=false"
     depends_on:
       - gateway
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
+    networks:
+      - fvn-network
 
   gateway:
     image: nginx:latest
@@ -230,9 +223,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
+    networks:
+      - fvn-network
 
   redis:
     image: redis
@@ -243,37 +235,50 @@ services:
       test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
       timeout: 10s
       retries: 10
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - fvn-network
 
   configserver:
     image: devmayank8/finvistanexus-configserver:4.0.0-SNAPSHOT
     container_name: fvn-configserver-ms
     ports:
-      - "8071:8071"
+      - "8071:8071" #MAIN
     environment:
       JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
       OTEL_SERVICE_NAME: "configserver"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_EXPORTER_OTLP_TIMEOUT: 10s
+      OTEL_METRICS_EXPORTER: none
     healthcheck:
       test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 10s
-    extends:
-      file: common-config.yml
-      service: microservice-base-config
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - fvn-network
 
   eurekaserver:
     image: devmayank8/finvistanexus-eurekaserver:4.0.0-SNAPSHOT
     container_name: fvn-eurekaserver-ms
     ports:
-      - "8070:8070"
+      - "8070:8070" #port mapping -> HOST:CONTAINER
     environment:
       SPRING_APPLICATION_NAME: "eurekaserver"
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
       OTEL_SERVICE_NAME: "eurekaserver"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_EXPORTER_OTLP_TIMEOUT: 10s
+      OTEL_METRICS_EXPORTER: none
     depends_on:
       configserver:
         condition: service_healthy
@@ -283,22 +288,31 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
-    extends:
-      file: common-config.yml
-      service: microservice-configserver-config
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - fvn-network
 
   accounts:
     image: devmayank8/finvistanexus-accounts:4.0.0-SNAPSHOT
     container_name: fvn-accounts-ms
-    #    ports:
-    #      - "8080:8080"
-    #      - "5005:5005"
+    ports:
+      #      - "8080:8080" #MAIN
+      - "5005:5005" #DEBUG
     environment:
       SPRING_APPLICATION_NAME: "accounts"
-      OTEL_SERVICE_NAME: "accounts"
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
       JAVA_TOOL_OPTIONS: >
         -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
         -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
+      OTEL_SERVICE_NAME: "accounts"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_EXPORTER_OTLP_TIMEOUT: 10s
+      OTEL_METRICS_EXPORTER: none
     depends_on:
       configserver:
         condition: service_healthy
@@ -310,22 +324,31 @@ services:
       timeout: 5s
       retries: 20
       start_period: 10s
-    extends:
-      file: common-config.yml
-      service: microservice-eurekaserver-config
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - fvn-network
 
   loans:
     image: devmayank8/finvistanexus-loans:4.0.0-SNAPSHOT
     container_name: fvn-loans-ms
-    #    ports:
-    #      - "8090:8090"
-    #      - "5010:5010"
+    ports:
+      #      - "8090:8090" #MAIN
+      - "5010:5010" #DEBUG
     environment:
       SPRING_APPLICATION_NAME: "loans"
-      OTEL_SERVICE_NAME: "loans"
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
       JAVA_TOOL_OPTIONS: >
         -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010
         -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
+      OTEL_SERVICE_NAME: "loans"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_EXPORTER_OTLP_TIMEOUT: 10s
+      OTEL_METRICS_EXPORTER: none
     depends_on:
       configserver:
         condition: service_healthy
@@ -337,22 +360,31 @@ services:
       timeout: 5s
       retries: 20
       start_period: 10s
-    extends:
-      file: common-config.yml
-      service: microservice-eurekaserver-config
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - fvn-network
 
   cards:
     image: devmayank8/finvistanexus-cards:4.0.0-SNAPSHOT
     container_name: fvn-cards-ms
-    #    ports:
-    #      - "9000:9000"
-    #      - "5015:5015"
+    ports:
+      #      - "9000:9000" #MAIN
+      - "5015:5015" #DEBUG
     environment:
       SPRING_APPLICATION_NAME: "cards"
-      OTEL_SERVICE_NAME: "cards"
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
       JAVA_TOOL_OPTIONS: >
         -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5015
         -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
+      OTEL_SERVICE_NAME: "cards"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_EXPORTER_OTLP_TIMEOUT: 10s
+      OTEL_METRICS_EXPORTER: none
     depends_on:
       configserver:
         condition: service_healthy
@@ -364,9 +396,12 @@ services:
       timeout: 5s
       retries: 20
       start_period: 10s
-    extends:
-      file: common-config.yml
-      service: microservice-eurekaserver-config
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - fvn-network
 
   gatewayserver:
     image: devmayank8/finvistanexus-gatewayserver:4.0.0-SNAPSHOT
@@ -375,12 +410,18 @@ services:
       - "8072:8072"
     environment:
       SPRING_APPLICATION_NAME: "gatewayserver"
-      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
-      OTEL_SERVICE_NAME: "gatewayserver"
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
       SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
       SPRING_DATA_REDIS_TIMEOUT: 1s
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
+      OTEL_SERVICE_NAME: "gatewayserver"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_EXPORTER_OTLP_TIMEOUT: 10s
+      OTEL_METRICS_EXPORTER: none
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:8080/realms/master/protocol/openid-connect/certs"
     depends_on:
       accounts:
@@ -391,9 +432,12 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    extends:
-      file: common-config.yml
-      service: microservice-eurekaserver-config
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - fvn-network
 
 networks:
   fvn-network:
