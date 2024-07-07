@@ -25,6 +25,7 @@
         <module>loans</module>
         <module>cards</module>
         <module>gatewayserver</module>
+        <module>message</module>
     </modules>
 
 
