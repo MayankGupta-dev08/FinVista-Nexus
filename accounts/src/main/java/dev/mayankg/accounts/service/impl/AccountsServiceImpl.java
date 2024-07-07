@@ -2,6 +2,7 @@ package dev.mayankg.accounts.service.impl;
 
 import dev.mayankg.accounts.constants.AccountsEnum;
 import dev.mayankg.accounts.dto.AccountsDto;
+import dev.mayankg.accounts.dto.AccountsMessageDto;
 import dev.mayankg.accounts.dto.CustomerDto;
 import dev.mayankg.accounts.entity.Accounts;
 import dev.mayankg.accounts.entity.Customer;
@@ -13,28 +14,30 @@ import dev.mayankg.accounts.repository.AccountsRepository;
 import dev.mayankg.accounts.repository.CustomerRepository;
 import dev.mayankg.accounts.service.IAccountsService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
-@Slf4j
 @Service
 @AllArgsConstructor
 public class AccountsServiceImpl implements IAccountsService {
 
+    private static final Logger logger = LoggerFactory.getLogger(AccountsServiceImpl.class);
+
     private AccountsRepository accountsRepository;
     private CustomerRepository customerRepository;
+    private StreamBridge streamBridge;
 
     /**
      * @param customerDto - CustomerDto object
      */
     @Override
     public void createAccount(CustomerDto customerDto) {
-        log.info("AccountsServiceImpl#createAccount");
-
+        logger.info("AccountsServiceImpl#createAccount");
         Customer customer = CustomerMapper.mapToCustomer(customerDto);
         Optional<Customer> optionalCustomer = customerRepository.findByMobileNumber(customer.getMobileNumber());
         if (optionalCustomer.isPresent()) {
@@ -42,7 +45,10 @@ public class AccountsServiceImpl implements IAccountsService {
                     String.format("Customer already registered with this %s mobile number", customerDto.getMobileNumber()));
         }
         Customer savedCustomer = customerRepository.save(customer);
-        accountsRepository.save(createNewAccount(savedCustomer));
+        Accounts savedAccount = accountsRepository.save(createNewAccount(savedCustomer));
+
+        // sending an async  message from accounts to message m/s
+        sendCommunication(savedAccount, savedCustomer);
     }
 
     /**
@@ -51,8 +57,7 @@ public class AccountsServiceImpl implements IAccountsService {
      */
     @Override
     public CustomerDto fetchAccount(String mobileNumber) {
-        log.info("AccountsServiceImpl#fetchAccount");
-
+        logger.info("AccountsServiceImpl#fetchAccount");
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
         );
@@ -70,9 +75,8 @@ public class AccountsServiceImpl implements IAccountsService {
      */
     @Override
     public boolean updateAccount(CustomerDto customerDto) {
-        log.info("AccountsServiceImpl#updateAccount");
+        logger.info("AccountsServiceImpl#updateAccount");
         boolean isUpdated = false;
-
         AccountsDto accountsDto = customerDto.getAccountsDto();
         if (accountsDto != null) {
             Long accountNumber = accountsDto.getAccountNumber();
@@ -100,8 +104,7 @@ public class AccountsServiceImpl implements IAccountsService {
      */
     @Override
     public boolean deleteAccount(String mobileNumber) {
-        log.info("AccountsServiceImpl#deleteAccount");
-
+        logger.info("AccountsServiceImpl#deleteAccount");
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
         );
@@ -109,6 +112,25 @@ public class AccountsServiceImpl implements IAccountsService {
         customerRepository.deleteById(customer.getCustomerId());
         return true;
     }
+
+    /**
+     * @param accountNumber - Long
+     * @return boolean indicating if the update of communication status is successful or not
+     */
+    @Override
+    public boolean updateCommunicationStatus(Long accountNumber) {
+        boolean isUpdated = false;
+        if (accountNumber != null) {
+            Accounts accounts = accountsRepository.findById(accountNumber).orElseThrow(
+                    () -> new ResourceNotFoundException("Account", "AccountNumber", accountNumber.toString())
+            );
+            accounts.setCommunicationSw(true);
+            accountsRepository.save(accounts);
+            isUpdated = true;
+        }
+        return isUpdated;
+    }
+
 
     /**
      * @param customer
@@ -122,5 +144,13 @@ public class AccountsServiceImpl implements IAccountsService {
         newAccount.setAccountType(AccountsEnum.AccountType.SAVINGS.getValue());
         newAccount.setBranchAddress(AccountsEnum.Address.MAIN.getValue());
         return newAccount;
+    }
+
+    private void sendCommunication(Accounts account, Customer customer) {
+        AccountsMessageDto accountsMessageDto = new AccountsMessageDto(
+                account.getAccountNumber(), customer.getName(), customer.getEmail(), customer.getMobileNumber());
+        logger.info("Sending Communication request for the details: {}", accountsMessageDto);
+        boolean isSent = streamBridge.send("sendCommunication-out-0", accountsMessageDto);
+        logger.info("Is the Communication request successfully triggered ? : {}", isSent);
     }
 }

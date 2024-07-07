@@ -1,0 +1,57 @@
+server:
+  port: 9010
+
+spring:
+  application:
+    name: "message"
+  cloud:
+    function:
+      definition: email|sms
+    stream:
+      bindings:
+        emailsms-in-0: #binding name according to functions (email|sms)
+          destination: send-communication #queueName
+          group: ${spring.application.name}
+        emailsms-out-0: #binding name according to functions (email|sms)
+          destination: communication-sent #exhange name for outgoing msg
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    connection-timeout: 10s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    shutdown:
+      enabled: true
+    gateway:
+      enabled: true
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+endpoints:
+  shutdown:
+    enabled: true
+
+info:
+  app:
+    name: "message"
+    description: "FinVista Nexus Message Application"
+    version: "5.0.0"
