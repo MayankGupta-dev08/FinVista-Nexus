@@ -1,4 +1,21 @@
 services:
+  rabbit:
+    image: rabbitmq:3.13-management
+    container_name: fvn-rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.1
     container_name: fvn-keycloak
@@ -290,19 +307,22 @@ services:
   accounts:
     image: devmayank8/finvistanexus-accounts:5.0.0-SNAPSHOT
     container_name: fvn-accounts-ms
-    #    ports:
-    #      - "8080:8080"
-    #      - "5005:5005"
+#    ports:
+#      - "8080:8080"
+#      - "5005:5005"
     environment:
       SPRING_APPLICATION_NAME: "accounts"
       OTEL_SERVICE_NAME: "accounts"
       JAVA_TOOL_OPTIONS: >
         -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
         -javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar
+      SPRING_RABBITMQ_HOST: "rabbit"
     depends_on:
       configserver:
         condition: service_healthy
       eurekaserver:
+        condition: service_healthy
+      rabbit:
         condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
@@ -317,9 +337,9 @@ services:
   loans:
     image: devmayank8/finvistanexus-loans:5.0.0-SNAPSHOT
     container_name: fvn-loans-ms
-    #    ports:
-    #      - "8090:8090"
-    #      - "5010:5010"
+#    ports:
+#      - "8090:8090"
+#      - "5010:5010"
     environment:
       SPRING_APPLICATION_NAME: "loans"
       OTEL_SERVICE_NAME: "loans"
@@ -344,9 +364,9 @@ services:
   cards:
     image: devmayank8/finvistanexus-cards:5.0.0-SNAPSHOT
     container_name: fvn-cards-ms
-    #    ports:
-    #      - "9000:9000"
-    #      - "5015:5015"
+#    ports:
+#      - "9000:9000"
+#      - "5015:5015"
     environment:
       SPRING_APPLICATION_NAME: "cards"
       OTEL_SERVICE_NAME: "cards"
@@ -367,6 +387,25 @@ services:
     extends:
       file: common-config.yml
       service: microservice-eurekaserver-config
+
+  message:
+    image: devmayank8/finvistanexus-message:5.0.0-SNAPSHOT
+    container_name: fvn-message-ms
+    environment:
+      SPRING_APPLICATION_NAME: "message"
+      SPRING_RABBITMQ_HOST: "rabbit"
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:9010/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   gatewayserver:
     image: devmayank8/finvistanexus-gatewayserver:5.0.0-SNAPSHOT
