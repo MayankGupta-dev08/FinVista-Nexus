@@ -121,16 +121,22 @@ docker run -d --name fvn-accounts -p 8090:8090 -p 5010:5010 devmayank8/finvistan
 docker run -d --name fvn-accounts -p 9000:9000 -p 5015:5015 devmayank8/finvistanexus-cards:1.0.1-SNAPSHOT
 ```
 
-- To run RabbitMQ 3.13 using docker image and default credentials
+- To run RabbitMQ 3.13 container in detached mode using docker image and default credentials
 
 ```shell
-docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
+docker run -d -it --rm --name fvn-rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
 ```
 
-- To run redis using docker image and default credentials
+- To run redis container in detached mode using docker image and default credentials
 
 ```shell
-docker run --name fvn-redis -p 6379:6379 -d redis
+docker run -d --name fvn-redis -p 6379:6379 -d redis
+```
+
+- To run Keycloak container in detached mode using docker with default values
+
+```shell
+docker run -d -p 7080:8080 --name fvn-keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:25.0.1 start-dev
 ```
 
 - To push the image to docker hub registry (make sure you are logged in using docker cli or docker desktop)
