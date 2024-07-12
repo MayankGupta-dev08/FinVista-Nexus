@@ -28,6 +28,8 @@ Microservices - POC
 - **OAuth2/OpenID Connect**
 - **KeyCloak (IAM)**
 - **Spring Security**
+- **Spring Cloud Functions**
+- **Spring Cloud Stream**
 
 ## Project Overview
 
