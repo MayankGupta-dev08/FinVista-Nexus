@@ -26,7 +26,7 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
-  #  rabbit:
+#  rabbit:
 #    image: rabbitmq:3.13-management
 #    container_name: fvn-rabbitmq
 #    hostname: rabbitmq
