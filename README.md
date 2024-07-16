@@ -159,6 +159,24 @@ docker pull devmayank8/finvistanexus-accounts:1.0.1-SNAPSHOT
 docker ps -a
 ```
 
+- To stop all the running containers in docker
+
+```shell
+docker stop $(docker ps -a -q)
+```
+
+- To remove all the containers in docker
+
+```shell
+docker rm $(docker ps -a -q)
+```
+
+- To remove all the images in docker
+
+```shell
+docker rmi $(docker images -q)
+```
+
 - To login into the docker hub container registry
 
 ```shell
