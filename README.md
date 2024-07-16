@@ -201,6 +201,12 @@ docker history <image_name>
 docker rm <image_id>
 ```
 
+- To remove all the dangling docker images
+
+```shell
+docker image prune -a
+```
+
 - To follow the log output of a particular container
 
 ```shell
