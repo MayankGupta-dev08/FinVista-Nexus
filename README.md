@@ -103,6 +103,12 @@ mvn compile jib:dockerBuild
 
 ### Docker Commands
 
+- To display the system wide information of the Docker installation.
+
+```shell
+docker info | more
+```
+
 - To generate the docker image using the Dockerfile created
 
 ```shell
