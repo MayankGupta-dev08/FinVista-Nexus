@@ -255,6 +255,24 @@ docker conatiner prune
 docker system prune
 ```
 
+- To display the disk usage info for the docker
+
+```shell
+docker system df
+```
+
+- To display the disk usage info for the docker along with breakdown
+
+```shell
+docker system df -v
+```
+
+- To list all the docker networks on your system [3 n/ws : bridge (default), none and host]
+
+```shell
+docker network ls
+```
+
 ### Docker Compose Commands
 
 - To start the containers using a `docker-compose.yml` file
