@@ -153,6 +153,12 @@ docker run -d --name fvn-redis -p 6379:6379 -d redis
 docker run -d -p 7080:8080 --name fvn-keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:25.0.1 start-dev
 ```
 
+- To run a MySQL container in the background with persistent storage, setting the root password, and naming the container `mysql-db`.
+
+```shell
+docker run -d -v /opt/data:/var/lib/mysql --name mysql-db -e MYSQL_ROOT_PASSWORD=db_pass123 mysql
+```
+
 - To push the image to docker hub registry (make sure you are logged in using docker cli or docker desktop)
 
 ```shell
