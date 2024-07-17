@@ -153,12 +153,6 @@ docker run -d --name fvn-redis -p 6379:6379 -d redis
 docker run -d -p 7080:8080 --name fvn-keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:25.0.1 start-dev
 ```
 
-- To run a MySQL container in the background with persistent storage, setting the root password, and naming the container `mysql-db`.
-
-```shell
-docker run -d -v /opt/data:/var/lib/mysql --name mysql-db -e MYSQL_ROOT_PASSWORD=db_pass123 mysql
-```
-
 - To push the image to docker hub registry (make sure you are logged in using docker cli or docker desktop)
 
 ```shell
@@ -273,10 +267,46 @@ docker system df
 docker system df -v
 ```
 
+- To list all the docker volumes on your system
+
+```shell
+docker volume ls
+```
+
 - To list all the docker networks on your system [3 n/ws : bridge (default), none and host]
 
 ```shell
 docker network ls
+```
+
+- To inspect a particular network `bridge`
+
+```shell
+docker network inspect bridge
+```
+
+- To run a container `alpine-2` with `none` network and image as `alpine`
+
+```shell
+docker run --network=none --name alpine-2 alpine
+```
+
+- To run a MySQL container in the background with persistent storage, setting the root password, and naming the container `mysql-db`.
+
+```shell
+docker run -d -v /opt/data:/var/lib/mysql --name mysql-db -e MYSQL_ROOT_PASSWORD=db_pass123 mysql
+```
+
+- Create a new network named `wp-mysql-network` using the `bridge` driver. Allocate subnet `182.18.0.1/24`. Configure Gateway `182.18.0.1`
+
+```shell
+docker network create --driver bridge --subnet 182.18.0.1/24 --gateway 182.18.0.1 wp-mysql-network
+```
+
+- To run a container named `webapp` from the `kodekloud/simple-webapp-mysql` image, setting environment variables for database connection, attaching it to the `wp-mysql-network` network, mapping host port 38080 to container port 8080, and linking it to the `mysql-db` container.
+
+```shell
+docker run -d -e DB_HOST=mysql-db -e DB_PASSWORD=db_pass123 --network=wp-mysql-network -p 38080:8080 --link mysql-db:mysql-db --name webapp kodekloud/simple-webapp-mysql
 ```
 
 ### Docker Compose Commands
