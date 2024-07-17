@@ -109,7 +109,13 @@ mvn compile jib:dockerBuild
 docker info | more
 ```
 
-- To generate the docker image using the Dockerfile created
+- To build a docker image from `Dockerfile2` which is located in the current directory `.`
+
+```shell
+docker build . -f Dockerfile2 -t devmayank8/myApp
+```
+
+- To build a docker image from `Dockerfile` which is located in the current directory `.`
 
 ```shell
 docker build . -t devmayank8/finvistanexus-accounts:1.0.1-SNAPSHOT
