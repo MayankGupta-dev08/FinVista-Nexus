@@ -335,7 +335,7 @@ docker-compose stop
 
 - NOTE: Make sure this path `C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe` is present/added in your system PATH variables of Windows machine.
 
-- Lists all the contexts available in your `kubeconfig` file. **Contexts** define _the cluster, user, and namespace_ to use for subsequent kubectl commands.
+- Lists all the contexts available in your `kubeconfig` file. **Contexts** define _the cluster, user, and namespace_ to use for further kubectl commands.
 
 ```shell
 kubectl config get-contexts
@@ -347,10 +347,22 @@ kubectl config get-contexts
 kubectl config get-clusters
 ```
 
-- Switches the current context to <docker-desktop>. This is useful when you have multiple contexts and need to switch between them for different clusters or environments.
+- Switch the current context to <docker-desktop>. This is useful when you have multiple contexts and need to switch between them for different clusters or environments.
 
 ```shell
 kubectl config use-context docker-desktop
+```
+
+- Creates and runs a new pod named `fvn-accounts` using the `devmayank8/finvistanexus-accounts:1.0.1-SNAPSHOT` image. The pod listens on port 8080.
+
+```shell
+kubectl run fvn-accounts --image=devmayank8/finvistanexus-accounts:1.0.1-SNAPSHOT --port=8080
+```
+
+- Displays information about the **Kubernetes cluster** and its version, along with the **Kubernetes API server** version.
+
+```shell
+kubectl cluster-info
 ```
 
 - Displays information about the **nodes** in your **Kubernetes cluster**, including their status, roles, age, and version. Nodes are the physical or virtual machines that make up a Kubernetes cluster.
